@@ -1,15 +1,159 @@
 @import "tailwindcss" source("../");
 
+@theme {
+  --font-display: "Anton", "Arial Narrow", "Impact", sans-serif;
+  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink-950: #090b09;
+  --color-ink-900: #0f120f;
+  --color-ink-800: #161a16;
+  --color-ink-700: #1f241f;
+
+  --color-volt-200: #f0ffb0;
+  --color-volt-300: #e7ff6e;
+  --color-volt-400: #d9f84a;
+  --color-volt-500: #bcd92f;
+  --color-volt-600: #93ab1f;
+
+  --color-bone-100: #eef1e8;
+  --color-bone-300: #c9cfc0;
+  --color-bone-500: #9aa391;
+  --color-bone-700: #6b7365;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  @apply m-0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  color: var(--color-bone-100);
+  background-color: var(--color-ink-950);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Fixed gym-photo backdrop with readability gradients + film grain */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: url("/gym-bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.06'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(1100px 520px at 85% -10%, rgba(217, 248, 74, 0.09), transparent 60%),
+    linear-gradient(180deg, rgba(9, 11, 9, 0.78) 0%, rgba(9, 11, 9, 0.72) 38%, rgba(9, 11, 9, 0.94) 100%);
+}
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+::selection {
+  background: var(--color-volt-400);
+  color: var(--color-ink-950);
+}
+
+@layer components {
+  .page-shell {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12;
+  }
+
+  .panel {
+    @apply rounded-2xl border border-white/10 bg-ink-900/70 backdrop-blur-md shadow-[0_24px_60px_-24px_rgba(0,0,0,0.85)];
+  }
+
+  .display-title {
+    @apply font-display uppercase tracking-wide text-white leading-none;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.55);
+  }
+
+  .kicker {
+    @apply text-[11px] font-bold uppercase tracking-[0.22em] text-volt-400;
+  }
+
+  .section-title {
+    @apply font-display uppercase tracking-wide text-white text-lg sm:text-xl;
+  }
+
+  .btn-volt {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-volt-400 text-ink-950 text-sm font-bold uppercase tracking-wider px-5 py-2.5 transition hover:bg-volt-300 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+    box-shadow: 0 8px 24px -8px rgba(217, 248, 74, 0.45);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/5 text-bone-100 text-sm font-semibold px-4 py-2 transition hover:bg-white/10 hover:text-white active:scale-[0.98];
+  }
+
+  .field-label {
+    @apply block text-[11px] font-bold uppercase tracking-[0.14em] text-bone-500 mb-1.5;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-white/10 bg-black/30 px-3 py-2 text-sm text-bone-100 placeholder:text-bone-700 transition focus:outline-none focus:ring-2 focus:ring-volt-400/60 focus:border-volt-400/40;
+  }
+
+  select.field option {
+    background-color: var(--color-ink-900);
+    color: var(--color-bone-100);
+  }
+
+  .tile {
+    @apply rounded-xl border border-white/10 bg-white/[0.04] p-4;
+  }
+
+  .data-table {
+    width: 100%;
+    font-size: 0.875rem;
+    text-align: left;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .data-table thead th {
+    @apply text-[11px] font-bold uppercase tracking-[0.12em] text-bone-500 bg-white/[0.05] px-3 py-2.5;
+  }
+
+  .data-table thead th:first-child {
+    border-top-left-radius: 0.65rem;
+    border-bottom-left-radius: 0.65rem;
+  }
+
+  .data-table thead th:last-child {
+    border-top-right-radius: 0.75rem;
+    border-bottom-right-radius: 0.65rem;
+  }
+
+  .data-table tbody td {
+    @apply px-3 py-2.5 text-bone-300 border-b border-white/[0.06];
+  }
+
+  .data-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .nav-pill {
+    @apply px-3.5 py-1.5 rounded-lg text-sm font-semibold text-bone-300 transition hover:text-white hover:bg-white/5;
+  }
+
+  .nav-pill-active {
+    @apply text-ink-950 bg-volt-400 hover:bg-volt-400 hover:text-ink-950;
+  }
 }

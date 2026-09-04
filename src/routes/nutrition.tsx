@@ -89,125 +89,133 @@ function NutritionPage() {
   ]
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">Nutrition recipes</h1>
-      <p className="text-gray-500 mb-8">
-        Keep the meals and recipes that fuel your training.
-      </p>
+    <div className="page-shell">
+      <div className="pt-6 sm:pt-10 pb-10">
+        <p className="kicker mb-3">Fuel the machine</p>
+        <h1 className="display-title text-4xl sm:text-5xl">Nutrition recipes</h1>
+        <p className="mt-3 max-w-xl text-bone-300">
+          Keep the meals and recipes that fuel your training.
+        </p>
+      </div>
 
-      <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-rose-500 p-2 rounded-lg">
-            <Flame className="w-5 h-5 text-white" />
-          </div>
+      <div className="panel p-6 mb-8">
+        <div className="flex items-center gap-3 mb-5">
+          <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-2.5 rounded-xl">
+            <Flame className="w-5 h-5" />
+          </span>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Six-Pack Nutrition Plan</h2>
-            <p className="text-sm text-gray-500">
+            <h2 className="section-title">Six-Pack Nutrition Plan</h2>
+            <p className="text-sm text-bone-500">
               Current stats: 99kg | Goal: muscular with visible abs
             </p>
           </div>
         </div>
 
-        <p className="text-sm text-gray-700 mb-4">
+        <p className="text-sm text-bone-300 mb-5">
           This is where your six-pack happens. Not in the gym. A slow recomp cut to
           reveal abs while keeping strength.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {macroTargets.map((target) => (
-            <div key={target.label} className="bg-gray-50 rounded-lg p-4">
-              <div className="flex items-center gap-2 mb-1">
-                <target.icon className="w-4 h-4 text-rose-500" />
-                <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+            <div key={target.label} className="tile">
+              <div className="flex items-center gap-2 mb-1.5">
+                <target.icon className="w-4 h-4 text-volt-400" />
+                <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-bone-500">
                   {target.label}
                 </span>
               </div>
-              <p className="text-lg font-semibold text-gray-900">{target.value}</p>
-              {target.note && <p className="text-xs text-gray-500 mt-1">{target.note}</p>}
+              <p className="text-lg font-bold text-bone-100">{target.value}</p>
+              {target.note && <p className="text-xs text-bone-500 mt-1">{target.note}</p>}
             </div>
           ))}
         </div>
 
-        <div className="space-y-3">
-          <h3 className="text-sm font-semibold text-gray-900">Sample Eating Day</h3>
+        <div className="space-y-1">
+          <h3 className="section-title text-base mb-3">Sample Eating Day</h3>
           {sampleMeals.map((meal) => (
             <div
               key={meal.name}
-              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-2 border-b border-gray-100 last:border-0"
+              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 py-3 border-b border-white/[0.06] last:border-0"
             >
               <div>
-                <p className="text-sm font-medium text-gray-800">{meal.name}</p>
-                <p className="text-sm text-gray-500">{meal.items}</p>
+                <p className="text-sm font-semibold text-bone-100">{meal.name}</p>
+                <p className="text-sm text-bone-500">{meal.items}</p>
               </div>
-              <p className="text-sm font-medium text-rose-600 whitespace-nowrap">{meal.macros}</p>
+              <p className="text-sm font-bold text-volt-400 whitespace-nowrap">{meal.macros}</p>
             </div>
           ))}
         </div>
 
-        <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-700">
-          <span className="font-semibold">Daily Total:</span>
-          <span>~2,400 cal | 215P / 195C / 75F</span>
-          <span className="text-emerald-600 font-medium">✅</span>
+        <div className="mt-5 pt-5 border-t border-white/[0.06] flex flex-wrap items-center gap-2 text-sm">
+          <span className="font-bold uppercase tracking-wider text-bone-100">Daily Total:</span>
+          <span className="text-bone-300">~2,400 cal | 215P / 195C / 75F</span>
+          <span className="ml-auto text-volt-400 font-bold uppercase tracking-wider text-xs">On track</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl shadow-sm p-6 space-y-4 lg:col-span-1 h-fit"
+          className="panel p-6 space-y-5 lg:col-span-1 h-fit"
         >
-          <h2 className="text-lg font-semibold text-gray-900">New recipe</h2>
+          <h2 className="section-title">New recipe</h2>
           <div>
-            <label className="text-sm font-medium text-gray-700">Name</label>
+            <label className="field-label" htmlFor="recipe-name">Name</label>
             <input
+              id="recipe-name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="High-protein chicken bowl"
               required
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="field"
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-gray-700">Ingredients</label>
+            <label className="field-label" htmlFor="recipe-ingredients">Ingredients</label>
             <textarea
+              id="recipe-ingredients"
               value={ingredients}
               onChange={(e) => setIngredients(e.target.value)}
               rows={3}
               placeholder="200g chicken breast, 150g rice, broccoli..."
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="field"
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-gray-700">Instructions</label>
+            <label className="field-label" htmlFor="recipe-instructions">Instructions</label>
             <textarea
+              id="recipe-instructions"
               value={instructions}
               onChange={(e) => setInstructions(e.target.value)}
               rows={3}
               placeholder="Grill the chicken, steam the broccoli..."
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+              className="field"
             />
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <div className="flex-1">
-              <label className="text-sm font-medium text-gray-700">Calories</label>
+              <label className="field-label" htmlFor="recipe-calories">Calories</label>
               <input
+                id="recipe-calories"
                 value={calories}
                 onChange={(e) => setCalories(e.target.value)}
                 type="number"
                 min={0}
                 placeholder="550"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="field"
               />
             </div>
             <div className="flex-1">
-              <label className="text-sm font-medium text-gray-700">Protein (g)</label>
+              <label className="field-label" htmlFor="recipe-protein">Protein (g)</label>
               <input
+                id="recipe-protein"
                 value={protein}
                 onChange={(e) => setProtein(e.target.value)}
                 type="number"
                 min={0}
                 placeholder="45"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                className="field"
               />
             </div>
           </div>
@@ -215,7 +223,7 @@ function NutritionPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-lg py-2 text-sm disabled:opacity-50"
+            className="btn-volt w-full"
           >
             {submitting ? 'Saving...' : 'Save recipe'}
           </button>
@@ -223,18 +231,21 @@ function NutritionPage() {
 
         <div className="lg:col-span-2 space-y-4">
           {recipes.length === 0 && (
-            <p className="text-gray-500 text-sm">No recipes yet — add your first one.</p>
+            <div className="panel p-8 text-center">
+              <p className="display-title text-xl text-bone-500">No recipes yet</p>
+              <p className="text-sm text-bone-700 mt-2">Add your first recipe with the form on the left.</p>
+            </div>
           )}
           {recipes.map((recipe) => (
-            <div key={recipe.id} className="bg-white rounded-xl shadow-sm p-6">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="bg-amber-500 p-2 rounded-lg">
-                    <UtensilsCrossed className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{recipe.name}</h3>
-                    <p className="text-sm text-gray-500">
+            <div key={recipe.id} className="panel p-6">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-2.5 rounded-xl shrink-0">
+                    <UtensilsCrossed className="w-5 h-5" />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-bone-100">{recipe.name}</h3>
+                    <p className="text-sm text-bone-500">
                       {recipe.calories != null && `${recipe.calories} kcal`}
                       {recipe.calories != null && recipe.protein != null && ' · '}
                       {recipe.protein != null && `${recipe.protein}g protein`}
@@ -243,21 +254,21 @@ function NutritionPage() {
                 </div>
                 <button
                   onClick={() => handleDelete(recipe.id)}
-                  className="text-gray-400 hover:text-red-500"
+                  className="text-bone-700 hover:text-red-400 transition shrink-0"
                   aria-label="Delete recipe"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
               {recipe.ingredients && (
-                <p className="mt-3 text-sm text-gray-700 whitespace-pre-wrap">
-                  <span className="font-medium">Ingredients: </span>
+                <p className="mt-3 text-sm text-bone-300 whitespace-pre-wrap">
+                  <span className="font-semibold text-bone-100">Ingredients: </span>
                   {recipe.ingredients}
                 </p>
               )}
               {recipe.instructions && (
-                <p className="mt-2 text-sm text-gray-700 whitespace-pre-wrap">
-                  <span className="font-medium">Instructions: </span>
+                <p className="mt-2 text-sm text-bone-300 whitespace-pre-wrap">
+                  <span className="font-semibold text-bone-100">Instructions: </span>
                   {recipe.instructions}
                 </p>
               )}
