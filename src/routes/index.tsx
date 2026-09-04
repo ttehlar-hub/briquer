@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Dumbbell, ClipboardList, UtensilsCrossed } from 'lucide-react'
+import { ArrowUpRight, ClipboardList, Dumbbell, UtensilsCrossed } from 'lucide-react'
 import { getWorkouts } from '../server/workouts.functions'
 import { getRoutines } from '../server/routines.functions'
 import { getRecipes } from '../server/recipes.functions'
@@ -24,7 +24,6 @@ function Home() {
       to: '/workouts' as const,
       title: 'Workout Sessions',
       icon: Dumbbell,
-      color: 'bg-emerald-500',
       count: workouts.length,
       description: 'Log the sets, reps and weight from every session.',
     },
@@ -32,7 +31,6 @@ function Home() {
       to: '/routines' as const,
       title: 'Routines',
       icon: ClipboardList,
-      color: 'bg-blue-500',
       count: routines.length,
       description: 'Plan reusable exercise routines to follow.',
     },
@@ -40,37 +38,39 @@ function Home() {
       to: '/nutrition' as const,
       title: 'Nutrition Recipes',
       icon: UtensilsCrossed,
-      color: 'bg-amber-500',
       count: recipes.length,
       description: 'Keep the recipes that fuel your training.',
     },
   ]
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">
-        Welcome back to your gym log
-      </h1>
-      <p className="text-gray-500 mb-8">
-        Everything about your training — sessions, routines and nutrition — in
-        one place.
-      </p>
+    <div className="page-shell">
+      <section className="pt-6 sm:pt-14 pb-10">
+        <p className="kicker mb-3">Your training log</p>
+        <h1 className="display-title text-4xl sm:text-6xl">
+          Welcome back to<br className="hidden sm:block" /> your gym log
+        </h1>
+        <p className="mt-4 max-w-xl text-bone-300">
+          Everything about your training — sessions, routines and nutrition — in one place.
+        </p>
+      </section>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {cards.map((card) => (
           <Link
             key={card.to}
             to={card.to}
-            className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow"
+            className="panel group p-6 transition duration-200 hover:border-volt-400/40 hover:-translate-y-1"
           >
-            <div className={`${card.color} p-3 rounded-lg inline-flex mb-4`}>
-              <card.icon className="w-6 h-6 text-white" />
+            <div className="flex items-start justify-between">
+              <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-3 rounded-xl">
+                <card.icon className="w-6 h-6" />
+              </span>
+              <ArrowUpRight className="w-5 h-5 text-bone-700 transition group-hover:text-volt-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </div>
-            <p className="text-2xl font-bold text-gray-900">{card.count}</p>
-            <h2 className="text-lg font-semibold text-gray-900 mt-1">
-              {card.title}
-            </h2>
-            <p className="text-sm text-gray-500 mt-1">{card.description}</p>
+            <p className="display-title text-4xl mt-5 text-volt-400">{card.count}</p>
+            <h2 className="section-title mt-1.5">{card.title}</h2>
+            <p className="text-sm text-bone-500 mt-1.5">{card.description}</p>
           </Link>
         ))}
       </div>

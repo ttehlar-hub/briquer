@@ -1,6 +1,6 @@
 import { createFileRoute, useRouter, Link } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Plus, Trash2, Dumbbell, Calendar, TrendingUp, Target, Flame } from 'lucide-react'
+import { Trash2, Dumbbell, Calendar, TrendingUp, Target } from 'lucide-react'
 import {
   getWorkouts,
   createWorkout,
@@ -100,7 +100,7 @@ const trainingPlan = [
   },
   {
     day: 'Day 6',
-    focus: '🔥 Olympic Lifting — Full Body',
+    focus: 'Olympic Lifting — Full Body',
     href: '/workouts/olympic-lifting',
     exercises: [],
   },
@@ -193,103 +193,105 @@ function WorkoutsPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">Workout sessions</h1>
-      <p className="text-gray-500 mb-8">
-        Log every session with the sets, reps and weight you actually did.
-      </p>
+    <div className="page-shell">
+      <div className="pt-6 sm:pt-10 pb-10">
+        <p className="kicker mb-3">Training plan</p>
+        <h1 className="display-title text-4xl sm:text-5xl">Workout sessions</h1>
+        <p className="mt-3 max-w-xl text-bone-300">
+          Log every session with the sets, reps and weight you actually did.
+        </p>
+      </div>
 
-      <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-emerald-500 p-2 rounded-lg">
-            <Dumbbell className="w-5 h-5 text-white" />
-          </div>
+      <div className="panel p-6 mb-8">
+        <div className="flex items-center gap-3 mb-5">
+          <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-2.5 rounded-xl">
+            <Dumbbell className="w-5 h-5" />
+          </span>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Custom Training Plan</h2>
-            <p className="text-sm text-gray-500">
+            <h2 className="section-title">Custom Training Plan</h2>
+            <p className="text-sm text-bone-500">
               Push/Pull/Legs 6-day rotation — heavy compounds + hypertrophy work
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div className="bg-gray-50 rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <Target className="w-4 h-4 text-emerald-500" />
-              <span className="text-sm font-medium text-gray-700">Current Stats</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="tile">
+            <div className="flex items-center gap-2 mb-1.5">
+              <Target className="w-4 h-4 text-volt-400" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-bone-500">Current Stats</span>
             </div>
-            <p className="text-sm text-gray-800">99kg | Goal: muscular with visible abs</p>
+            <p className="text-sm text-bone-100">99kg | Goal: muscular with visible abs</p>
           </div>
-          <div className="bg-gray-50 rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <TrendingUp className="w-4 h-4 text-emerald-500" />
-              <span className="text-sm font-medium text-gray-700">Why PPL?</span>
+          <div className="tile">
+            <div className="flex items-center gap-2 mb-1.5">
+              <TrendingUp className="w-4 h-4 text-volt-400" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-bone-500">Why PPL?</span>
             </div>
-            <p className="text-sm text-gray-800">
+            <p className="text-sm text-bone-100">
               Research shows training each muscle 2x per week builds more muscle than a bro split.
             </p>
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs text-gray-500 uppercase bg-gray-50">
+        <div className="overflow-x-auto rounded-xl">
+          <table className="data-table">
+            <thead>
               <tr>
-                <th className="px-4 py-2 rounded-l-lg">Day</th>
-                <th className="px-4 py-2">Focus</th>
+                <th>Day</th>
+                <th>Focus</th>
               </tr>
             </thead>
             <tbody>
               {trainingPlan.map((day) => (
-                <tr key={day.day} className="border-b border-gray-100 last:border-0">
-                  <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{day.day}</td>
-                  <td className="px-4 py-3 text-gray-700">{day.focus}</td>
+                <tr key={day.day}>
+                  <td className="font-semibold text-bone-100 whitespace-nowrap">{day.day}</td>
+                  <td>{day.focus}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        <div className="mt-6 space-y-6">
+        <div className="mt-8 space-y-8">
           {trainingPlan.map((day) =>
             day.focus === 'REST' ? null : day.exercises.length === 0 && 'href' in day && day.href ? (
               <div
                 key={day.day}
-                className="flex flex-wrap items-center justify-between gap-3 bg-emerald-50 border border-emerald-200 rounded-lg p-4"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-volt-400/30 bg-volt-400/10 p-4"
               >
-                <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-emerald-500" />
+                <h3 className="text-sm font-bold text-volt-200 flex items-center gap-2 uppercase tracking-wider">
+                  <Calendar className="w-4 h-4" />
                   {day.day} — {day.focus}
                 </h3>
                 <Link
                   to={day.href}
-                  className="flex items-center gap-1.5 text-sm font-medium text-emerald-600 hover:text-emerald-700 whitespace-nowrap"
+                  className="btn-volt px-4 py-2 text-xs"
                 >
-                  <Flame className="w-4 h-4" />
                   View full Oly day plan
                 </Link>
               </div>
             ) : (
               <div key={day.day}>
-                <h3 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-emerald-500" />
+                <h3 className="text-[11px] font-bold uppercase tracking-[0.16em] text-volt-400 mb-2 flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
                   {day.day} — {day.focus}
                 </h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm text-left">
-                    <thead className="text-xs text-gray-500 uppercase bg-gray-50">
+                <div className="overflow-x-auto rounded-xl">
+                  <table className="data-table">
+                    <thead>
                       <tr>
-                        <th className="px-3 py-2 rounded-l-lg">Exercise</th>
-                        <th className="px-3 py-2">Sets × Reps</th>
-                        <th className="px-3 py-2 rounded-r-lg">Rest</th>
+                        <th>Exercise</th>
+                        <th>Sets × Reps</th>
+                        <th>Rest</th>
                       </tr>
                     </thead>
                     <tbody>
                       {day.exercises.map((exercise) => (
-                        <tr key={exercise.name} className="border-b border-gray-100 last:border-0">
-                          <td className="px-3 py-2 text-gray-800">{exercise.name}</td>
-                          <td className="px-3 py-2 text-gray-600 whitespace-nowrap">{exercise.setsReps}</td>
-                          <td className="px-3 py-2 text-gray-600 whitespace-nowrap">{exercise.rest}</td>
+                        <tr key={exercise.name}>
+                          <td className="text-bone-100">{exercise.name}</td>
+                          <td className="whitespace-nowrap">{exercise.setsReps}</td>
+                          <td className="whitespace-nowrap">{exercise.rest}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -300,22 +302,22 @@ function WorkoutsPage() {
           )}
         </div>
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">Progression Rules</h3>
-            <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="tile">
+            <h3 className="section-title text-base mb-3">Progression Rules</h3>
+            <ul className="list-disc list-inside text-sm text-bone-300 space-y-1.5">
               <li>
-                <span className="font-medium">Heavy (5-rep):</span> add 2.5kg when all sets hit 5 reps with good form; otherwise stay.
+                <span className="font-semibold text-bone-100">Heavy (5-rep):</span> add 2.5kg when all sets hit 5 reps with good form; otherwise stay.
               </li>
               <li>
-                <span className="font-medium">Hypertrophy (12-15 rep):</span> increase weight when you hit the top of the rep range on all sets.
+                <span className="font-semibold text-bone-100">Hypertrophy (12-15 rep):</span> increase weight when you hit the top of the rep range on all sets.
               </li>
               <li>Focus on controlled tempo: 3 seconds down, 1 second up.</li>
             </ul>
           </div>
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 mb-2">Weekly Non-Negotiables</h3>
-            <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+          <div className="tile">
+            <h3 className="section-title text-base mb-3">Weekly Non-Negotiables</h3>
+            <ul className="list-disc list-inside text-sm text-bone-300 space-y-1.5">
               {weeklyRules.map((rule) => (
                 <li key={rule}>{rule}</li>
               ))}
@@ -323,43 +325,45 @@ function WorkoutsPage() {
           </div>
         </div>
 
-        <div className="mt-6">
-          <h3 className="text-sm font-semibold text-gray-900 mb-2">Realistic Timeline</h3>
+        <div className="mt-8">
+          <h3 className="section-title text-base mb-3">Realistic Timeline</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {timeline.map((phase) => (
-              <div key={phase.weeks} className="bg-gray-50 rounded-lg p-3">
-                <p className="text-sm font-medium text-emerald-600">{phase.weeks}</p>
-                <p className="text-sm text-gray-700 mt-1">{phase.expectation}</p>
+              <div key={phase.weeks} className="tile">
+                <p className="text-xs font-bold uppercase tracking-wider text-volt-400">{phase.weeks}</p>
+                <p className="text-sm text-bone-300 mt-1.5">{phase.expectation}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl shadow-sm p-6 space-y-4 lg:col-span-1 h-fit"
+          className="panel p-6 space-y-5 lg:col-span-1 h-fit"
         >
-          <h2 className="text-lg font-semibold text-gray-900">Log a session</h2>
+          <h2 className="section-title">Log a session</h2>
 
           <div>
-            <label className="text-sm font-medium text-gray-700">Date</label>
+            <label className="field-label" htmlFor="workout-date">Date</label>
             <input
+              id="workout-date"
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="field"
             />
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-700">Routine (optional)</label>
+            <label className="field-label" htmlFor="workout-routine">Routine (optional)</label>
             <select
+              id="workout-routine"
               value={routineId}
               onChange={(e) => applyRoutine(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="field"
             >
               <option value="">No routine</option>
               {routines.map((routine) => (
@@ -371,25 +375,27 @@ function WorkoutsPage() {
           </div>
 
           <div>
-            <label className="text-sm font-medium text-gray-700">Notes</label>
+            <label className="field-label" htmlFor="workout-notes">Notes</label>
             <textarea
+              id="workout-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
               placeholder="Felt strong today"
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="field"
             />
           </div>
 
-          <div className="space-y-3">
-            <label className="text-sm font-medium text-gray-700">Exercises</label>
+          <div className="space-y-2.5">
+            <span className="field-label">Exercises</span>
             {exercises.map((exercise, index) => (
               <div key={index} className="flex gap-2">
                 <input
                   value={exercise.name}
                   onChange={(e) => updateExercise(index, 'name', e.target.value)}
                   placeholder="Squat"
-                  className="flex-1 rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  aria-label={`Exercise ${index + 1} name`}
+                  className="field flex-1 min-w-0"
                 />
                 <input
                   value={exercise.sets}
@@ -397,7 +403,8 @@ function WorkoutsPage() {
                   type="number"
                   min={1}
                   placeholder="Sets"
-                  className="w-14 rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  aria-label={`Exercise ${index + 1} sets`}
+                  className="field w-14 px-2 shrink-0"
                 />
                 <input
                   value={exercise.reps}
@@ -405,7 +412,8 @@ function WorkoutsPage() {
                   type="number"
                   min={1}
                   placeholder="Reps"
-                  className="w-14 rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  aria-label={`Exercise ${index + 1} reps`}
+                  className="field w-14 px-2 shrink-0"
                 />
                 <input
                   value={exercise.weight}
@@ -414,23 +422,24 @@ function WorkoutsPage() {
                   min={0}
                   step="0.5"
                   placeholder="kg"
-                  className="w-16 rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  aria-label={`Exercise ${index + 1} weight`}
+                  className="field w-16 px-2 shrink-0"
                 />
               </div>
             ))}
             <button
               type="button"
               onClick={() => setExercises((prev) => [...prev, emptyExercise()])}
-              className="flex items-center gap-1 text-sm text-emerald-600 font-medium hover:text-emerald-700"
+              className="btn-ghost w-full py-2 text-xs"
             >
-              <Plus className="w-4 h-4" /> Add exercise
+              Add exercise
             </button>
           </div>
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-lg py-2 text-sm disabled:opacity-50"
+            className="btn-volt w-full"
           >
             {submitting ? 'Saving...' : 'Save session'}
           </button>
@@ -438,41 +447,44 @@ function WorkoutsPage() {
 
         <div className="lg:col-span-2 space-y-4">
           {workouts.length === 0 && (
-            <p className="text-gray-500 text-sm">No sessions logged yet.</p>
+            <div className="panel p-8 text-center">
+              <p className="display-title text-xl text-bone-500">No sessions logged yet</p>
+              <p className="text-sm text-bone-700 mt-2">Log your first session with the form on the left.</p>
+            </div>
           )}
           {workouts.map((workout) => (
-            <div key={workout.id} className="bg-white rounded-xl shadow-sm p-6">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="bg-emerald-500 p-2 rounded-lg">
-                    <Dumbbell className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
+            <div key={workout.id} className="panel p-6">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-2.5 rounded-xl shrink-0">
+                    <Dumbbell className="w-5 h-5" />
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-bone-100">
                       {toDateInputValue(workout.date)}
                       {workout.routineName && (
-                        <span className="text-gray-500 font-normal"> · {workout.routineName}</span>
+                        <span className="text-bone-500 font-normal"> · {workout.routineName}</span>
                       )}
                     </h3>
                     {workout.notes && (
-                      <p className="text-sm text-gray-500">{workout.notes}</p>
+                      <p className="text-sm text-bone-500">{workout.notes}</p>
                     )}
                   </div>
                 </div>
                 <button
                   onClick={() => handleDelete(workout.id)}
-                  className="text-gray-400 hover:text-red-500"
+                  className="text-bone-700 hover:text-red-400 transition shrink-0"
                   aria-label="Delete session"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>
               {workout.exercises.length > 0 && (
-                <ul className="mt-4 divide-y divide-gray-100 text-sm">
+                <ul className="mt-4 divide-y divide-white/[0.06] text-sm">
                   {workout.exercises.map((exercise) => (
-                    <li key={exercise.id} className="py-2 flex justify-between">
-                      <span className="text-gray-800">{exercise.name}</span>
-                      <span className="text-gray-500">
+                    <li key={exercise.id} className="py-2.5 flex justify-between gap-3">
+                      <span className="text-bone-100">{exercise.name}</span>
+                      <span className="text-bone-500 whitespace-nowrap">
                         {exercise.sets} × {exercise.reps} @ {exercise.weight}kg
                       </span>
                     </li>

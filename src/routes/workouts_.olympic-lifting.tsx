@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Flame, ShieldAlert, Calendar, Activity, ClipboardList } from 'lucide-react'
+import { Flame, ShieldAlert, Calendar, Activity, ClipboardList, ArrowLeft } from 'lucide-react'
 
 export const Route = createFileRoute('/workouts_/olympic-lifting')({
   component: OlympicLiftingPage,
@@ -11,7 +11,7 @@ const weeklySchedule = [
   { day: 'Day 3', session: 'Legs (Heavy)' },
   { day: 'Day 4', session: 'Push (Hypertrophy)' },
   { day: 'Day 5', session: 'Pull (Hypertrophy)' },
-  { day: 'Day 6', session: '🔥 Olympic Lifting — Full Body' },
+  { day: 'Day 6', session: 'Olympic Lifting — Full Body' },
   { day: 'Day 7', session: 'REST' },
 ]
 
@@ -200,61 +200,60 @@ const safetyRules = [
 
 function OlympicLiftingPage() {
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="mb-2">
+    <div className="page-shell">
+      <div className="pt-6 sm:pt-10 pb-10">
         <Link
           to="/workouts"
-          className="text-sm text-emerald-600 hover:text-emerald-700 font-medium"
+          className="btn-ghost mb-5 px-3.5 py-1.5 text-xs"
         >
-          ← Back to workouts
+          <ArrowLeft className="w-3.5 h-3.5" />
+          Back to workouts
         </Link>
+        <p className="kicker mb-3">Day 6 · Technique session</p>
+        <h1 className="display-title text-4xl sm:text-5xl">
+          Olympic Lifting Day
+          <span className="block sm:inline text-xl sm:text-2xl text-bone-500 font-sans font-semibold normal-case tracking-normal mt-1 sm:mt-0 sm:ml-3">
+            — Full Body Technique Session
+          </span>
+        </h1>
+        <p className="mt-3 text-bone-300">~75 min · technique-first · replaces Day 6</p>
       </div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
-        🏋️ Olympic Lifting Day
-        <span className="text-gray-500 font-normal text-xl">— Full Body Technique Session</span>
-      </h1>
-      <p className="text-gray-500 mb-8">~75 min · technique-first · replaces Day 6</p>
 
-      {/* Where it fits in your week */}
-      <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-emerald-500 p-2 rounded-lg">
-            <Calendar className="w-5 h-5 text-white" />
-          </div>
+      <div className="panel p-6 mb-6">
+        <div className="flex items-center gap-3 mb-5">
+          <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-2.5 rounded-xl">
+            <Calendar className="w-5 h-5" />
+          </span>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Where it fits in your week</h2>
-            <p className="text-sm text-gray-500">We replace Day 6 (Legs Hypertrophy) with this Oly day</p>
+            <h2 className="section-title">Where it fits in your week</h2>
+            <p className="text-sm text-bone-500">We replace Day 6 (Legs Hypertrophy) with this Oly day</p>
           </div>
         </div>
 
-        <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 mb-6">
+        <ul className="list-disc list-inside text-sm text-bone-300 space-y-1.5 mb-6">
           <li>Olympic lifts are extremely leg-dominant (deep squats, explosive pulls, receiving positions)</li>
           <li>Your legs already got destroyed on Day 3 (Heavy Legs)</li>
           <li>The Oly day gives your legs a different stimulus — speed, power, mobility — instead of more grinding reps</li>
           <li>This keeps your recovery intact so you don't burn out</li>
         </ul>
 
-        <h3 className="text-sm font-semibold text-gray-900 mb-2">Updated Weekly Schedule</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs text-gray-500 uppercase bg-gray-50">
+        <h3 className="section-title text-base mb-3">Updated Weekly Schedule</h3>
+        <div className="overflow-x-auto rounded-xl">
+          <table className="data-table">
+            <thead>
               <tr>
-                <th className="px-4 py-2 rounded-l-lg">Day</th>
-                <th className="px-4 py-2 rounded-r-lg">Session</th>
+                <th>Day</th>
+                <th>Session</th>
               </tr>
             </thead>
             <tbody>
               {weeklySchedule.map((row) => (
                 <tr
                   key={row.day}
-                  className={
-                    row.day === 'Day 6'
-                      ? 'border-b border-gray-100 bg-emerald-50'
-                      : 'border-b border-gray-100 last:border-0'
-                  }
+                  className={row.day === 'Day 6' ? 'bg-volt-400/10' : ''}
                 >
-                  <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{row.day}</td>
-                  <td className={`px-4 py-3 whitespace-nowrap ${row.day === 'Day 6' ? 'font-semibold text-emerald-700' : 'text-gray-700'}`}>
+                  <td className="font-semibold text-bone-100 whitespace-nowrap">{row.day}</td>
+                  <td className={`whitespace-nowrap ${row.day === 'Day 6' ? 'font-bold text-volt-400' : ''}`}>
                     {row.session}
                   </td>
                 </tr>
@@ -264,37 +263,33 @@ function OlympicLiftingPage() {
         </div>
       </div>
 
-      {/* Critical beginner warning */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-amber-500 p-2 rounded-lg">
-            <ShieldAlert className="w-5 h-5 text-white" />
-          </div>
+      <div className="panel border-amber-400/30 bg-amber-950/30 p-6 mb-6">
+        <div className="flex items-center gap-3 mb-5">
+          <span className="bg-amber-400/10 border border-amber-400/30 text-amber-300 p-2.5 rounded-xl">
+            <ShieldAlert className="w-5 h-5" />
+          </span>
           <div>
-            <h2 className="text-lg font-semibold text-amber-900">
-              ⚠️ Critical: you are a beginner at Oly lifts
-            </h2>
-            <p className="text-sm text-amber-700">This changes everything about how we program this day.</p>
+            <h2 className="section-title text-amber-200">Critical: you are a beginner at Oly lifts</h2>
+            <p className="text-sm text-amber-300/80">This changes everything about how we program this day.</p>
           </div>
         </div>
         <ul className="space-y-2">
           {beginnerRules.map((rule) => (
-            <li key={rule.title} className="text-sm text-amber-900">
-              <span className="font-semibold">{rule.title}.</span> {rule.detail}
+            <li key={rule.title} className="text-sm text-amber-100/90">
+              <span className="font-bold">{rule.title}.</span> {rule.detail}
             </li>
           ))}
         </ul>
       </div>
 
-      {/* Workout blocks */}
-      <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+      <div className="panel p-6 mb-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="bg-emerald-500 p-2 rounded-lg">
-            <ClipboardList className="w-5 h-5 text-white" />
-          </div>
+          <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-2.5 rounded-xl">
+            <ClipboardList className="w-5 h-5" />
+          </span>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">The Oly Day Workout</h2>
-            <p className="text-sm text-gray-500">~75 minutes, blocks 0 through 5</p>
+            <h2 className="section-title">The Oly Day Workout</h2>
+            <p className="text-sm text-bone-500">~75 minutes, blocks 0 through 5</p>
           </div>
         </div>
 
@@ -302,49 +297,34 @@ function OlympicLiftingPage() {
           {blocks.map((block) => (
             <div key={block.id}>
               <div className="flex flex-wrap items-center gap-3 mb-2">
-                <h3 className="text-sm font-semibold text-gray-900">{block.title}</h3>
+                <h3 className="section-title text-base">{block.title}</h3>
                 <span
-                  className={`text-xs font-medium rounded-full px-2 py-0.5 ${
+                  className={`text-[11px] font-bold uppercase tracking-wider rounded-full px-2.5 py-1 ${
                     block.durationTone === 'red'
-                      ? 'bg-red-100 text-red-700'
-                      : 'bg-emerald-100 text-emerald-700'
+                      ? 'bg-red-400/15 text-red-300 border border-red-400/30'
+                      : 'bg-volt-400/15 text-volt-300 border border-volt-400/30'
                   }`}
                 >
                   {block.duration}
                 </span>
               </div>
-              {block.note && <p className="text-sm text-gray-500 mb-3">{block.note}</p>}
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                  <thead className="text-xs text-gray-500 uppercase bg-gray-50">
+              {block.note && <p className="text-sm text-bone-500 mb-3">{block.note}</p>}
+              <div className="overflow-x-auto rounded-xl">
+                <table className="data-table">
+                  <thead>
                     <tr>
-                      {block.columns.map((column, index) => (
-                        <th
-                          key={column}
-                          className={`px-3 py-2 ${
-                            index === 0
-                              ? 'rounded-l-lg'
-                              : index === block.columns.length - 1
-                                ? 'rounded-r-lg'
-                                : ''
-                          }`}
-                        >
-                          {column}
-                        </th>
+                      {block.columns.map((column) => (
+                        <th key={column}>{column}</th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {block.rows.map((row) => (
-                      <tr key={row[0]} className="border-b border-gray-100 last:border-0">
+                      <tr key={row[0]}>
                         {row.map((cell, index) => (
                           <td
                             key={index}
-                            className={`px-3 py-2 ${
-                              index === 0
-                                ? 'text-gray-800'
-                                : 'text-gray-600 whitespace-nowrap'
-                            }`}
+                            className={index === 0 ? 'text-bone-100' : 'whitespace-nowrap'}
                           >
                             {cell}
                           </td>
@@ -359,23 +339,22 @@ function OlympicLiftingPage() {
         </div>
       </div>
 
-      {/* 12-week progression plan */}
-      <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+      <div className="panel p-6 mb-6">
         <div className="flex items-center gap-3 mb-6">
-          <div className="bg-emerald-500 p-2 rounded-lg">
-            <Activity className="w-5 h-5 text-white" />
-          </div>
+          <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-2.5 rounded-xl">
+            <Activity className="w-5 h-5" />
+          </span>
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">📅 12-Week Beginner Progression Plan</h2>
-            <p className="text-sm text-gray-500">How you advance safely over 3 months</p>
+            <h2 className="section-title">12-Week Beginner Progression Plan</h2>
+            <p className="text-sm text-bone-500">How you advance safely over 3 months</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {phases.map((phase) => (
-            <div key={phase.title} className="bg-gray-50 rounded-lg p-4">
-              <h3 className="text-sm font-semibold text-emerald-600 mb-2">{phase.title}</h3>
-              <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+            <div key={phase.title} className="tile">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-volt-400 mb-2.5">{phase.title}</h3>
+              <ul className="list-disc list-inside text-sm text-bone-300 space-y-1.5">
                 {phase.points.map((point) => (
                   <li key={point}>{point}</li>
                 ))}
@@ -385,18 +364,17 @@ function OlympicLiftingPage() {
         </div>
       </div>
 
-      {/* Safety rules */}
-      <div className="bg-red-50 border border-red-200 rounded-xl p-6">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-red-500 p-2 rounded-lg">
-            <Flame className="w-5 h-5 text-white" />
-          </div>
-          <h2 className="text-lg font-semibold text-red-900">🚨 Safety Rules (read these)</h2>
+      <div className="panel border-red-400/30 bg-red-950/30 p-6">
+        <div className="flex items-center gap-3 mb-5">
+          <span className="bg-red-400/10 border border-red-400/30 text-red-300 p-2.5 rounded-xl">
+            <Flame className="w-5 h-5" />
+          </span>
+          <h2 className="section-title text-red-200">Safety Rules — read these</h2>
         </div>
         <ul className="space-y-3">
           {safetyRules.map((rule) => (
-            <li key={rule.title} className="text-sm text-red-900">
-              <span className="font-semibold">{rule.title}.</span> {rule.detail}
+            <li key={rule.title} className="text-sm text-red-100/90">
+              <span className="font-bold">{rule.title}.</span> {rule.detail}
             </li>
           ))}
         </ul>
