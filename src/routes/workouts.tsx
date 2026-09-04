@@ -1,6 +1,6 @@
-import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { createFileRoute, useRouter, Link } from '@tanstack/react-router'
 import { useState } from 'react'
-import { Plus, Trash2, Dumbbell, Calendar, TrendingUp, Target } from 'lucide-react'
+import { Plus, Trash2, Dumbbell, Calendar, TrendingUp, Target, Flame } from 'lucide-react'
 import {
   getWorkouts,
   createWorkout,
@@ -100,16 +100,9 @@ const trainingPlan = [
   },
   {
     day: 'Day 6',
-    focus: 'Legs (Hypertrophy)',
-    exercises: [
-      { name: 'Front Squat OR Goblet Squat', setsReps: '4 × 12', rest: '90s' },
-      { name: 'Bulgarian Split Squat', setsReps: '3 × 12/leg', rest: '90s' },
-      { name: 'Leg Extension', setsReps: '4 × 15', rest: '60s' },
-      { name: 'Leg Curl', setsReps: '4 × 15', rest: '60s' },
-      { name: 'Hip Thrust', setsReps: '4 × 12', rest: '90s' },
-      { name: 'Seated Calf Raise', setsReps: '4 × 20', rest: '45s' },
-      { name: 'Superset: Woodchoppers + Bicycle Crunches', setsReps: '3 × 15 each', rest: '60s' },
-    ],
+    focus: '🔥 Olympic Lifting — Full Body',
+    href: '/workouts/olympic-lifting',
+    exercises: [],
   },
   {
     day: 'Day 7',
@@ -259,7 +252,24 @@ function WorkoutsPage() {
 
         <div className="mt-6 space-y-6">
           {trainingPlan.map((day) =>
-            day.focus === 'REST' ? null : (
+            day.focus === 'REST' ? null : day.exercises.length === 0 && 'href' in day && day.href ? (
+              <div
+                key={day.day}
+                className="flex flex-wrap items-center justify-between gap-3 bg-emerald-50 border border-emerald-200 rounded-lg p-4"
+              >
+                <h3 className="text-sm font-semibold text-gray-900 flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-emerald-500" />
+                  {day.day} — {day.focus}
+                </h3>
+                <Link
+                  to={day.href}
+                  className="flex items-center gap-1.5 text-sm font-medium text-emerald-600 hover:text-emerald-700 whitespace-nowrap"
+                >
+                  <Flame className="w-4 h-4" />
+                  View full Oly day plan
+                </Link>
+              </div>
+            ) : (
               <div key={day.day}>
                 <h3 className="text-sm font-semibold text-gray-900 mb-2 flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-emerald-500" />
