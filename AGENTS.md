@@ -49,7 +49,7 @@ Gym Tracker — a single app for logging workout sessions, defining reusable rou
 
 - `routines` → `routine_exercises` (name, sets, reps, position) — a reusable exercise plan.
 - `workouts` → `workout_exercises` (name, sets, reps, weight) — an actual logged session, optionally linked to a routine.
-- `recipes` — standalone nutrition recipes with ingredients, instructions, calories, protein.
+- `recipes` — standalone nutrition recipes with ingredients, instructions, calories, protein, carbs and fats.
 
 ## Key Concepts
 
