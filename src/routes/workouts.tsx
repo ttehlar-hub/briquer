@@ -1,6 +1,7 @@
 import { createFileRoute, useRouter, Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Trash2, Dumbbell, Calendar, TrendingUp, Target } from 'lucide-react'
+import { ExerciseVideoLink } from '../components/ExerciseVideoLink'
 import {
   getWorkouts,
   createWorkout,
@@ -30,7 +31,21 @@ const emptyExercise = (): ExerciseDraft => ({
 
 const toDateInputValue = (date: Date) => new Date(date).toISOString().slice(0, 10)
 
-const trainingPlan = [
+type TrainingExercise = {
+  name: string
+  setsReps: string
+  rest: string
+  videoNames?: string[]
+}
+
+type TrainingDay = {
+  day: string
+  focus: string
+  exercises: TrainingExercise[]
+  href?: '/workouts/olympic-lifting'
+}
+
+const trainingPlan: TrainingDay[] = [
   {
     day: 'Day 1',
     focus: 'Push (Heavy)',
@@ -41,7 +56,12 @@ const trainingPlan = [
       { name: 'Dips (weighted if possible)', setsReps: '3 × 8', rest: '2 min' },
       { name: 'Lateral Raises', setsReps: '4 × 12', rest: '60s' },
       { name: 'Tricep Pushdowns', setsReps: '3 × 12', rest: '60s' },
-      { name: 'Superset: Cable Crunches + Hanging Leg Raises', setsReps: '3 × 15 each', rest: '60s' },
+      {
+        name: 'Superset: Cable Crunches + Hanging Leg Raises',
+        setsReps: '3 × 15 each',
+        rest: '60s',
+        videoNames: ['Cable Crunches', 'Hanging Leg Raises'],
+      },
     ],
   },
   {
@@ -67,7 +87,12 @@ const trainingPlan = [
       { name: 'Walking Lunges (dumbbells)', setsReps: '3 × 10/leg', rest: '2 min' },
       { name: 'Leg Curl', setsReps: '3 × 12', rest: '60s' },
       { name: 'Calf Raises (standing)', setsReps: '4 × 15', rest: '60s' },
-      { name: 'Superset: Planks (60s) + Ab Wheel Rollouts', setsReps: '3 rounds', rest: '60s' },
+      {
+        name: 'Superset: Planks (60s) + Ab Wheel Rollouts',
+        setsReps: '3 rounds',
+        rest: '60s',
+        videoNames: ['Planks', 'Ab Wheel Rollouts'],
+      },
     ],
   },
   {
@@ -289,7 +314,14 @@ function WorkoutsPage() {
                     <tbody>
                       {day.exercises.map((exercise) => (
                         <tr key={exercise.name}>
-                          <td className="text-bone-100">{exercise.name}</td>
+                          <td className="text-bone-100">
+                            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                              <span>{exercise.name}</span>
+                              {(exercise.videoNames ?? [exercise.name]).map((videoName) => (
+                                <ExerciseVideoLink key={videoName} exerciseName={videoName} />
+                              ))}
+                            </div>
+                          </td>
                           <td className="whitespace-nowrap">{exercise.setsReps}</td>
                           <td className="whitespace-nowrap">{exercise.rest}</td>
                         </tr>
@@ -425,6 +457,7 @@ function WorkoutsPage() {
                   aria-label={`Exercise ${index + 1} weight`}
                   className="field w-16 px-2 shrink-0"
                 />
+                <ExerciseVideoLink exerciseName={exercise.name} iconOnly />
               </div>
             ))}
             <button
@@ -483,7 +516,10 @@ function WorkoutsPage() {
                 <ul className="mt-4 divide-y divide-white/[0.06] text-sm">
                   {workout.exercises.map((exercise) => (
                     <li key={exercise.id} className="py-2.5 flex justify-between gap-3">
-                      <span className="text-bone-100">{exercise.name}</span>
+                      <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+                        <span className="text-bone-100">{exercise.name}</span>
+                        <ExerciseVideoLink exerciseName={exercise.name} />
+                      </div>
                       <span className="text-bone-500 whitespace-nowrap">
                         {exercise.sets} × {exercise.reps} @ {exercise.weight}kg
                       </span>

@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { Flame, ShieldAlert, Calendar, Activity, ClipboardList, ArrowLeft } from 'lucide-react'
+import { ExerciseVideoLink } from '../components/ExerciseVideoLink'
 
 export const Route = createFileRoute('/workouts_/olympic-lifting')({
   component: OlympicLiftingPage,
@@ -326,7 +327,14 @@ function OlympicLiftingPage() {
                             key={index}
                             className={index === 0 ? 'text-bone-100' : 'whitespace-nowrap'}
                           >
-                            {cell}
+                            {index === 0 ? (
+                              <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                <span>{cell}</span>
+                                <ExerciseVideoLink exerciseName={cell} />
+                              </div>
+                            ) : (
+                              cell
+                            )}
                           </td>
                         ))}
                       </tr>
