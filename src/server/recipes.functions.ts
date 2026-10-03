@@ -16,6 +16,8 @@ export const createRecipe = createServerFn({ method: 'POST' })
       instructions: z.string().default(''),
       calories: z.number().int().nullable(),
       protein: z.number().int().nullable(),
+      carbs: z.number().int().nullable(),
+      fats: z.number().int().nullable(),
     }),
   )
   .handler(async ({ data }) => {

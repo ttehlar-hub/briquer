@@ -47,5 +47,7 @@ export const recipes = pgTable('recipes', {
   instructions: text().notNull().default(''),
   calories: integer(),
   protein: integer(),
+  carbs: integer(),
+  fats: integer(),
   createdAt: timestamp('created_at').defaultNow(),
 })
