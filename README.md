@@ -6,6 +6,7 @@ A single place to track everything about the gym: workout sessions, reusable rou
 
 - **Workout sessions** — log a session's date, optional routine, and the exercises actually performed (sets, reps, weight).
 - **Routines** — define reusable exercise plans that can be applied to a new session with one click.
+- **Exercise video guides** — open a Shorts-focused YouTube search for each movement in the training plan, routines, workout logs and Olympic lifting session.
 - **Nutrition recipes** — keep the recipes you cook to support training, with ingredients, instructions, calories and protein.
 
 ## Tech stack

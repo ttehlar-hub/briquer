@@ -1,6 +1,7 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
 import { Trash2, ClipboardList } from 'lucide-react'
+import { ExerciseVideoLink } from '../components/ExerciseVideoLink'
 import {
   getRoutines,
   createRoutine,
@@ -131,6 +132,7 @@ function RoutinesPage() {
                   aria-label={`Exercise ${index + 1} reps`}
                   className="field w-16 px-2 shrink-0"
                 />
+                <ExerciseVideoLink exerciseName={exercise.name} iconOnly />
               </div>
             ))}
             <button
@@ -184,7 +186,10 @@ function RoutinesPage() {
                 <ul className="mt-4 divide-y divide-white/[0.06] text-sm">
                   {routine.exercises.map((exercise) => (
                     <li key={exercise.id} className="py-2.5 flex justify-between gap-3">
-                      <span className="text-bone-100">{exercise.name}</span>
+                      <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+                        <span className="text-bone-100">{exercise.name}</span>
+                        <ExerciseVideoLink exerciseName={exercise.name} />
+                      </div>
                       <span className="text-bone-500 whitespace-nowrap">
                         {exercise.sets} × {exercise.reps}
                       </span>
