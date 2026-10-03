@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { Flame, ShieldAlert, Calendar, Activity, ClipboardList, ArrowLeft } from 'lucide-react'
+import { Activity, ClipboardList, ArrowLeft } from 'lucide-react'
 import { ExerciseVideoLink } from '../components/ExerciseVideoLink'
+import { PlanFolder } from '../components/PlanFolder'
 
 export const Route = createFileRoute('/workouts_/olympic-lifting')({
   component: OlympicLiftingPage,
@@ -220,172 +221,164 @@ function OlympicLiftingPage() {
         <p className="mt-3 text-bone-300">~75 min · technique-first · replaces Day 6</p>
       </div>
 
-      <div className="panel p-6 mb-6">
-        <div className="flex items-center gap-3 mb-5">
-          <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-2.5 rounded-xl">
-            <Calendar className="w-5 h-5" />
-          </span>
-          <div>
-            <h2 className="section-title">Where it fits in your week</h2>
-            <p className="text-sm text-bone-500">We replace Day 6 (Legs Hypertrophy) with this Oly day</p>
-          </div>
-        </div>
+      <div className="space-y-4">
+        <PlanFolder
+          title="Where it fits in your week"
+          description="Weekly schedule and why Olympic lifting replaces the Day 6 leg session"
+          badge="Weekly schedule"
+        >
+          <ul className="mb-6 list-disc list-inside space-y-1.5 text-sm text-bone-300">
+            <li>Olympic lifts are extremely leg-dominant (deep squats, explosive pulls, receiving positions)</li>
+            <li>Your legs already got destroyed on Day 3 (Heavy Legs)</li>
+            <li>The Oly day gives your legs a different stimulus — speed, power, mobility — instead of more grinding reps</li>
+            <li>This keeps your recovery intact so you don't burn out</li>
+          </ul>
 
-        <ul className="list-disc list-inside text-sm text-bone-300 space-y-1.5 mb-6">
-          <li>Olympic lifts are extremely leg-dominant (deep squats, explosive pulls, receiving positions)</li>
-          <li>Your legs already got destroyed on Day 3 (Heavy Legs)</li>
-          <li>The Oly day gives your legs a different stimulus — speed, power, mobility — instead of more grinding reps</li>
-          <li>This keeps your recovery intact so you don't burn out</li>
-        </ul>
-
-        <h3 className="section-title text-base mb-3">Updated Weekly Schedule</h3>
-        <div className="overflow-x-auto rounded-xl">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Day</th>
-                <th>Session</th>
-              </tr>
-            </thead>
-            <tbody>
-              {weeklySchedule.map((row) => (
-                <tr
-                  key={row.day}
-                  className={row.day === 'Day 6' ? 'bg-volt-400/10' : ''}
-                >
-                  <td className="font-semibold text-bone-100 whitespace-nowrap">{row.day}</td>
-                  <td className={`whitespace-nowrap ${row.day === 'Day 6' ? 'font-bold text-volt-400' : ''}`}>
-                    {row.session}
-                  </td>
+          <h3 className="section-title text-base mb-3">Updated weekly schedule</h3>
+          <div className="overflow-x-auto rounded-xl">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Session</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div className="panel border-amber-400/30 bg-amber-950/30 p-6 mb-6">
-        <div className="flex items-center gap-3 mb-5">
-          <span className="bg-amber-400/10 border border-amber-400/30 text-amber-300 p-2.5 rounded-xl">
-            <ShieldAlert className="w-5 h-5" />
-          </span>
-          <div>
-            <h2 className="section-title text-amber-200">Critical: you are a beginner at Oly lifts</h2>
-            <p className="text-sm text-amber-300/80">This changes everything about how we program this day.</p>
+              </thead>
+              <tbody>
+                {weeklySchedule.map((row) => (
+                  <tr
+                    key={row.day}
+                    className={row.day === 'Day 6' ? 'bg-volt-400/10' : ''}
+                  >
+                    <td className="font-semibold text-bone-100 whitespace-nowrap">{row.day}</td>
+                    <td className={`whitespace-nowrap ${row.day === 'Day 6' ? 'font-bold text-volt-400' : ''}`}>
+                      {row.session}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-        </div>
-        <ul className="space-y-2">
-          {beginnerRules.map((rule) => (
-            <li key={rule.title} className="text-sm text-amber-100/90">
-              <span className="font-bold">{rule.title}.</span> {rule.detail}
-            </li>
-          ))}
-        </ul>
-      </div>
+        </PlanFolder>
 
-      <div className="panel p-6 mb-6">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-2.5 rounded-xl">
-            <ClipboardList className="w-5 h-5" />
-          </span>
-          <div>
-            <h2 className="section-title">The Oly Day Workout</h2>
-            <p className="text-sm text-bone-500">~75 minutes, blocks 0 through 5</p>
+        <PlanFolder
+          title="Critical beginner lifting rules"
+          description="Technique-first loading guidance to review before starting Olympic lifts"
+          badge="Read before lifting"
+          tone="warning"
+        >
+          <p className="mb-4 text-sm font-semibold text-amber-200">
+            Build safe, repeatable technique before adding weight.
+          </p>
+          <ul className="space-y-2">
+            {beginnerRules.map((rule) => (
+              <li key={rule.title} className="text-sm text-amber-100/90">
+                <span className="font-bold">{rule.title}.</span> {rule.detail}
+              </li>
+            ))}
+          </ul>
+        </PlanFolder>
+
+        <section className="panel p-6">
+          <div className="mb-5 flex items-center gap-3">
+            <span className="rounded-xl border border-volt-400/30 bg-volt-400/10 p-2.5 text-volt-400">
+              <ClipboardList className="h-5 w-5" />
+            </span>
+            <div>
+              <h2 className="section-title">The Oly Day Workout</h2>
+              <p className="text-sm text-bone-500">~75 minutes · open a block to see the exercises and coaching notes</p>
+            </div>
           </div>
-        </div>
 
-        <div className="space-y-8">
-          {blocks.map((block) => (
-            <div key={block.id}>
-              <div className="flex flex-wrap items-center gap-3 mb-2">
-                <h3 className="section-title text-base">{block.title}</h3>
-                <span
-                  className={`text-[11px] font-bold uppercase tracking-wider rounded-full px-2.5 py-1 ${
-                    block.durationTone === 'red'
-                      ? 'bg-red-400/15 text-red-300 border border-red-400/30'
-                      : 'bg-volt-400/15 text-volt-300 border border-volt-400/30'
-                  }`}
-                >
-                  {block.duration}
-                </span>
-              </div>
-              {block.note && <p className="text-sm text-bone-500 mb-3">{block.note}</p>}
-              <div className="overflow-x-auto rounded-xl">
-                <table className="data-table">
-                  <thead>
-                    <tr>
-                      {block.columns.map((column) => (
-                        <th key={column}>{column}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {block.rows.map((row) => (
-                      <tr key={row[0]}>
-                        {row.map((cell, index) => (
-                          <td
-                            key={index}
-                            className={index === 0 ? 'text-bone-100' : 'whitespace-nowrap'}
-                          >
-                            {index === 0 ? (
-                              <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                <span>{cell}</span>
-                                <ExerciseVideoLink exerciseName={cell} />
-                              </div>
-                            ) : (
-                              cell
-                            )}
-                          </td>
+          <div className="space-y-2.5">
+            {blocks.map((block) => (
+              <PlanFolder
+                key={block.id}
+                title={block.title}
+                description="Exercise sequence, set/rep targets, and coaching notes"
+                badge={block.duration}
+                tone={block.durationTone === 'red' ? 'danger' : 'default'}
+              >
+                {block.note && <p className="mb-3 text-sm text-bone-500">{block.note}</p>}
+                <div className="overflow-x-auto rounded-xl">
+                  <table className="data-table">
+                    <thead>
+                      <tr>
+                        {block.columns.map((column) => (
+                          <th key={column}>{column}</th>
                         ))}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="panel p-6 mb-6">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-2.5 rounded-xl">
-            <Activity className="w-5 h-5" />
-          </span>
-          <div>
-            <h2 className="section-title">12-Week Beginner Progression Plan</h2>
-            <p className="text-sm text-bone-500">How you advance safely over 3 months</p>
+                    </thead>
+                    <tbody>
+                      {block.rows.map((row) => (
+                        <tr key={row[0]}>
+                          {row.map((cell, index) => (
+                            <td
+                              key={index}
+                              className={index === 0 ? 'text-bone-100' : 'whitespace-nowrap'}
+                            >
+                              {index === 0 ? (
+                                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                                  <span>{cell}</span>
+                                  <ExerciseVideoLink exerciseName={cell} />
+                                </div>
+                              ) : (
+                                cell
+                              )}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </PlanFolder>
+            ))}
           </div>
-        </div>
+        </section>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {phases.map((phase) => (
-            <div key={phase.title} className="tile">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-volt-400 mb-2.5">{phase.title}</h3>
-              <ul className="list-disc list-inside text-sm text-bone-300 space-y-1.5">
-                {phase.points.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ul>
+        <section className="panel p-6">
+          <div className="mb-5 flex items-center gap-3">
+            <span className="rounded-xl border border-volt-400/30 bg-volt-400/10 p-2.5 text-volt-400">
+              <Activity className="h-5 w-5" />
+            </span>
+            <div>
+              <h2 className="section-title">12-Week Beginner Progression Plan</h2>
+              <p className="text-sm text-bone-500">Open a phase for its milestones and technique priorities</p>
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      <div className="panel border-red-400/30 bg-red-950/30 p-6">
-        <div className="flex items-center gap-3 mb-5">
-          <span className="bg-red-400/10 border border-red-400/30 text-red-300 p-2.5 rounded-xl">
-            <Flame className="w-5 h-5" />
-          </span>
-          <h2 className="section-title text-red-200">Safety Rules — read these</h2>
-        </div>
-        <ul className="space-y-3">
-          {safetyRules.map((rule) => (
-            <li key={rule.title} className="text-sm text-red-100/90">
-              <span className="font-bold">{rule.title}.</span> {rule.detail}
-            </li>
-          ))}
-        </ul>
+          <div className="space-y-2.5">
+            {phases.map((phase, index) => (
+              <PlanFolder
+                key={phase.title}
+                title={phase.title}
+                description="Progress milestones and movement priorities"
+                badge={`Phase ${index + 1}`}
+              >
+                <ul className="list-disc list-inside space-y-1.5 text-sm text-bone-300">
+                  {phase.points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              </PlanFolder>
+            ))}
+          </div>
+        </section>
+
+        <PlanFolder
+          title="Safety rules — read these"
+          description="Key checks for every Olympic lifting session"
+          badge="Safety"
+          tone="danger"
+        >
+          <ul className="space-y-3">
+            {safetyRules.map((rule) => (
+              <li key={rule.title} className="text-sm text-red-100/90">
+                <span className="font-bold">{rule.title}.</span> {rule.detail}
+              </li>
+            ))}
+          </ul>
+        </PlanFolder>
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-# Gym Tracker
+# GymTibTracker
 
 A single place to track everything about the gym: workout sessions, reusable routines, and nutrition recipes.
 
