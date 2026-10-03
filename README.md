@@ -4,7 +4,7 @@ A single place to track everything about the gym: workout sessions, reusable rou
 
 ## Features
 
-- **Workout sessions** — log a session's date, optional routine, and the exercises actually performed (sets, reps, weight).
+- **Workout sessions** — log a session's date, optional routine, and the exercises actually performed (sets, reps, weight). After every workout you choose to **save it as a draft** or **confirm it** ("I did this training") so it gets logged; drafts can be confirmed later from the session list.
 - **Routines** — define reusable exercise plans that can be applied to a new session with one click.
 - **Exercise video guides** — open a Shorts-focused YouTube search for each movement in the training plan, routines, workout logs and Olympic lifting session.
 - **Nutrition recipes** — keep the recipes you cook to support training, with ingredients, instructions, calories and protein.

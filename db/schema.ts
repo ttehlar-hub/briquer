@@ -1,4 +1,6 @@
-import { pgTable, serial, text, integer, real, timestamp } from 'drizzle-orm/pg-core'
+import { pgTable, serial, text, integer, real, timestamp, pgEnum } from 'drizzle-orm/pg-core'
+
+export const workoutStatus = pgEnum('workout_status', ['draft', 'logged'])
 
 export const routines = pgTable('routines', {
   id: serial().primaryKey(),
@@ -25,6 +27,9 @@ export const workouts = pgTable('workouts', {
   }),
   date: timestamp().notNull().defaultNow(),
   notes: text().notNull().default(''),
+  /** 'draft' = in progress / not yet confirmed, 'logged' = confirmed as done */
+  status: workoutStatus().notNull().default('logged'),
+  loggedAt: timestamp('logged_at'),
   createdAt: timestamp('created_at').defaultNow(),
 })
 

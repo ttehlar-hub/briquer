@@ -30,12 +30,12 @@ Gym Tracker — a single app for logging workout sessions, defining reusable rou
 ├── src
 │   ├── server
 │   │   ├── routines.functions.ts  # Server functions: list/create/delete routines and their exercises
-│   │   ├── workouts.functions.ts  # Server functions: list/create/delete workout sessions and their exercises
+│   │   ├── workouts.functions.ts  # Server functions: list/create/delete workout sessions, confirm drafts
 │   │   └── recipes.functions.ts   # Server functions: list/create/delete nutrition recipes
 │   ├── routes
 │   │   ├── __root.tsx    # Root layout: header nav (Overview, Workouts, Routines, Nutrition)
 │   │   ├── index.tsx     # Overview page with counts and links to each section
-│   │   ├── workouts.tsx  # Log and browse workout sessions (can prefill from a routine)
+│   │   ├── workouts.tsx  # Session logger (save as draft / confirm & log) and browse sessions
 │   │   ├── routines.tsx  # Create and browse reusable exercise routines
 │   │   └── nutrition.tsx # Create and browse nutrition recipes
 │   └── styles.css
@@ -48,7 +48,7 @@ Gym Tracker — a single app for logging workout sessions, defining reusable rou
 ## Data Model
 
 - `routines` → `routine_exercises` (name, sets, reps, position) — a reusable exercise plan.
-- `workouts` → `workout_exercises` (name, sets, reps, weight) — an actual logged session, optionally linked to a routine.
+- `workouts` (`status`: draft | logged, `loggedAt`) → `workout_exercises` (name, sets, reps, weight) — an actual logged session, optionally linked to a routine. New sessions start as a draft or are confirmed straight away; confirming stamps `loggedAt`.
 - `recipes` — standalone nutrition recipes with ingredients, instructions, calories, protein, carbs and fats.
 
 ## Key Concepts

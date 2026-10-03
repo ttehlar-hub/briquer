@@ -2,7 +2,7 @@ import { createServerFn } from '@tanstack/react-start'
 import { desc, eq } from 'drizzle-orm'
 import { z } from 'zod'
 import { db } from '../../db/index.js'
-import { workouts, workoutExercises, routines } from '../../db/schema.js'
+import { workouts, workoutExercises, routines, workoutStatus } from '../../db/schema.js'
 
 const ExerciseInput = z.object({
   name: z.string().min(1),
@@ -12,6 +12,8 @@ const ExerciseInput = z.object({
   notes: z.string().default(''),
 })
 
+const WorkoutStatus = z.enum(workoutStatus.enumValues)
+
 export const getWorkouts = createServerFn().handler(async () => {
   const allWorkouts = await db
     .select({
@@ -20,6 +22,8 @@ export const getWorkouts = createServerFn().handler(async () => {
       routineName: routines.name,
       date: workouts.date,
       notes: workouts.notes,
+      status: workouts.status,
+      loggedAt: workouts.loggedAt,
     })
     .from(workouts)
     .leftJoin(routines, eq(workouts.routineId, routines.id))
@@ -39,6 +43,7 @@ export const createWorkout = createServerFn({ method: 'POST' })
       routineId: z.number().nullable(),
       date: z.string(),
       notes: z.string().default(''),
+      status: WorkoutStatus.default('logged'),
       exercises: z.array(ExerciseInput).default([]),
     }),
   )
@@ -49,6 +54,8 @@ export const createWorkout = createServerFn({ method: 'POST' })
         routineId: data.routineId,
         date: new Date(data.date),
         notes: data.notes,
+        status: data.status,
+        loggedAt: data.status === 'logged' ? new Date() : null,
       })
       .returning()
 
@@ -65,6 +72,17 @@ export const createWorkout = createServerFn({ method: 'POST' })
       )
     }
 
+    return workout
+  })
+
+export const confirmWorkout = createServerFn({ method: 'POST' })
+  .inputValidator(z.object({ id: z.number() }))
+  .handler(async ({ data }) => {
+    const [workout] = await db
+      .update(workouts)
+      .set({ status: 'logged', loggedAt: new Date() })
+      .where(eq(workouts.id, data.id))
+      .returning()
     return workout
   })
 
