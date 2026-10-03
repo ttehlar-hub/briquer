@@ -4,7 +4,7 @@ This document provides an overview of the project structure for developers and A
 
 ## Project Overview
 
-Gym Tracker — a single app for logging workout sessions, defining reusable routines, and keeping nutrition recipes. Built with TanStack Start and deployed on Netlify.
+GymTibTracker — a single app for logging workout sessions, defining reusable routines, and keeping nutrition recipes. Built with TanStack Start and deployed on Netlify.
 
 ### Tech Stack
 
@@ -28,6 +28,9 @@ Gym Tracker — a single app for logging workout sessions, defining reusable rou
 ├── drizzle.config.ts  # Drizzle Kit config; migrations output to netlify/database/migrations
 ├── netlify/database/migrations  # Generated SQL migrations, applied automatically on deploy
 ├── src
+│   ├── components
+│   │   ├── ExerciseVideoLink.tsx # Search links for exercise technique videos
+│   │   └── PlanFolder.tsx # Reusable folder-style collapsible training sections
 │   ├── server
 │   │   ├── routines.functions.ts  # Server functions: list/create/delete routines and their exercises
 │   │   ├── workouts.functions.ts  # Server functions: list/create/delete workout sessions, confirm drafts
@@ -35,7 +38,7 @@ Gym Tracker — a single app for logging workout sessions, defining reusable rou
 │   ├── routes
 │   │   ├── __root.tsx    # Root layout: header nav (Overview, Workouts, Routines, Nutrition)
 │   │   ├── index.tsx     # Overview page with counts and links to each section
-│   │   ├── workouts.tsx  # Session logger (save as draft / confirm & log) and browse sessions
+│   │   ├── workouts.tsx  # Collapsible 6-day plan, session logger, and browsable workout history
 │   │   ├── routines.tsx  # Create and browse reusable exercise routines
 │   │   └── nutrition.tsx # Create and browse nutrition recipes
 │   └── styles.css

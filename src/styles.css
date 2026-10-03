@@ -119,6 +119,14 @@ code {
     @apply rounded-xl border border-white/10 bg-white/[0.04] p-4;
   }
 
+  .plan-folder > summary {
+    list-style: none;
+  }
+
+  .plan-folder > summary::-webkit-details-marker {
+    display: none;
+  }
+
   .data-table {
     width: 100%;
     font-size: 0.875rem;

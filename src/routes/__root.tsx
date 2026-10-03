@@ -22,7 +22,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Gym Tracker',
+        title: 'GymTibTracker',
       },
       {
         name: 'description',
@@ -72,7 +72,7 @@ function SiteHeader() {
             <span className="bg-volt-400 text-ink-950 p-1.5 rounded-lg shadow-[0_6px_18px_-6px_rgba(217,248,74,0.6)]">
               <Dumbbell className="w-5 h-5" strokeWidth={2.5} />
             </span>
-            Gym<span className="text-volt-400">Tracker</span>
+            Gym<span className="text-volt-400">TibTracker</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-1.5">
@@ -141,7 +141,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <main className="flex-1">{children}</main>
           <footer className="border-t border-white/10 py-6">
             <p className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-xs text-bone-700 uppercase tracking-[0.2em]">
-              Gym Tracker — train hard, log everything
+              GymTibTracker — train hard, log everything
             </p>
           </footer>
         </div>
