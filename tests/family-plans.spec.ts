@@ -92,14 +92,37 @@ test('existing section bookmarks still open Tibor’s plan', async ({ page }) =>
   }
 })
 
-test('Janka’s Olympic lifting link and back link keep her profile', async ({ page }) => {
-  await visit(page, '/plans/janka/workouts')
-  await expect(page.getByText('Janka’s starter setup', { exact: false })).toBeVisible()
+test('Tibor’s Olympic lifting link and back link keep his profile', async ({ page }) => {
+  await visit(page, '/plans/tibor/workouts')
   await page.getByText('Day 6 · Olympic Lifting — Full Body', { exact: true }).click()
   await page.getByRole('link', { name: 'Open Day 6 session' }).click()
-  await expect(page).toHaveURL('/plans/janka/workouts/olympic-lifting')
+  await expect(page).toHaveURL('/plans/tibor/workouts/olympic-lifting')
   await page.getByRole('link', { name: 'Back to workouts' }).click()
-  await expect(page).toHaveURL('/plans/janka/workouts')
+  await expect(page).toHaveURL('/plans/tibor/workouts')
+})
+
+test('Janka has a three-day full-body plan, YouTube form searches, and her own background', async ({ page }) => {
+  await visit(page, '/plans/janka/workouts')
+  await expect(page.getByRole('heading', { name: '3-Day Full-Body Plan' })).toBeVisible()
+  await expect(page.getByText('3 training sessions · rest between days', { exact: true })).toBeVisible()
+  await expect(page.getByText('Janka’s starter setup', { exact: false })).toBeVisible()
+
+  const backgroundImage = await page.locator('body').evaluate((body) =>
+    getComputedStyle(body, '::before').backgroundImage,
+  )
+  expect(backgroundImage).toContain('janka-training-bg.jpg')
+
+  for (const day of [
+    { title: 'Day 1 · Full Body A', exercise: 'Goblet Squat' },
+    { title: 'Day 2 · Full Body B', exercise: 'Leg Press' },
+    { title: 'Day 3 · Full Body C', exercise: 'Dumbbell Step-Up' },
+  ]) {
+    await page.getByText(day.title, { exact: true }).click()
+    await expect(page.getByText(day.exercise, { exact: true })).toBeVisible()
+    await expect(
+      page.getByRole('link', { name: `Find a short YouTube video for ${day.exercise}` }),
+    ).toHaveAttribute('href', /^https:\/\/www\.youtube\.com\/results\?search_query=/)
+  }
 })
 
 test('mobile chooser, overview and menu stay usable without horizontal scrolling', async ({ page }) => {

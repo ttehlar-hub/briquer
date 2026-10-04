@@ -138,14 +138,21 @@ function SiteHeader({ light }: { light: boolean }) {
 function RootDocument({ children }: { children: React.ReactNode }) {
   const hydrated = useHydrated()
   const pathname = useLocation({ select: (location) => location.pathname })
-  const light = pathname === '/' || /^\/plans\/[^/]+\/?$/.test(pathname)
+  const isHome = pathname === '/'
+  const isJankaPlan = /^\/plans\/janka(?:\/|$)/.test(pathname)
+  const light = isHome || /^\/plans\/[^/]+\/?$/.test(pathname)
+  const bodyClassName = [
+    light && 'light-surface',
+    isHome && 'home-surface',
+    isJankaPlan && 'janka-surface',
+  ].filter(Boolean).join(' ')
 
   return (
     <html lang="en">
       <head>
         <HeadContent />
       </head>
-      <body className={light ? 'light-surface' : undefined} data-hydrated={hydrated}>
+      <body className={bodyClassName || undefined} data-hydrated={hydrated}>
         <div className="min-h-screen flex flex-col">
           <a className="skip-link" href="#main-content">Skip to content</a>
           <SiteHeader light={light} />

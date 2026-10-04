@@ -45,7 +45,7 @@ function PlanOverview() {
 
       <p className="plan-footnote">
         {member.id === 'janka'
-          ? 'Your own log, with the same starting setup. We’ll make it yours as you go.'
+          ? 'Your 3-day full-body workout plan is ready; nutrition still uses the shared starter template.'
           : 'Small steps. Stronger days. All at your own pace.'}
       </p>
     </div>

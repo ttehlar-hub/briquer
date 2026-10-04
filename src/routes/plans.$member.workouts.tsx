@@ -74,7 +74,7 @@ type TrainingDay = {
   href?: '/plans/$member/workouts/olympic-lifting'
 }
 
-const trainingPlan: TrainingDay[] = [
+const tiborTrainingPlan: TrainingDay[] = [
   {
     day: 'Day 1',
     focus: 'Push (Heavy)',
@@ -165,6 +165,70 @@ const trainingPlan: TrainingDay[] = [
   },
 ]
 
+const jankaTrainingPlan: TrainingDay[] = [
+  {
+    day: 'Day 1',
+    focus: 'Full Body A',
+    exercises: [
+      { name: 'Goblet Squat', setsReps: '3 × 8–10', rest: '90s' },
+      { name: 'Dumbbell Romanian Deadlift', setsReps: '3 × 8–10', rest: '90s' },
+      { name: 'Dumbbell Bench Press', setsReps: '3 × 8–12', rest: '90s' },
+      { name: 'Lat Pulldown', setsReps: '3 × 8–12', rest: '90s' },
+      { name: 'Hip Thrust', setsReps: '3 × 10–12', rest: '90s' },
+      { name: 'Dead Bug', setsReps: '3 × 10 / side', rest: '60s' },
+    ],
+  },
+  {
+    day: 'Day 2',
+    focus: 'Full Body B',
+    exercises: [
+      { name: 'Leg Press', setsReps: '3 × 10–12', rest: '90s' },
+      { name: 'Dumbbell Shoulder Press', setsReps: '3 × 8–12', rest: '90s' },
+      { name: 'Seated Cable Row', setsReps: '3 × 8–12', rest: '90s' },
+      { name: 'Reverse Lunge (dumbbells)', setsReps: '3 × 8 / leg', rest: '90s' },
+      { name: 'Seated Leg Curl', setsReps: '3 × 10–12', rest: '60s' },
+      { name: 'Pallof Press', setsReps: '3 × 10 / side', rest: '60s' },
+    ],
+  },
+  {
+    day: 'Day 3',
+    focus: 'Full Body C',
+    exercises: [
+      { name: 'Dumbbell Step-Up', setsReps: '3 × 8 / leg', rest: '90s' },
+      { name: 'Romanian Deadlift', setsReps: '3 × 8–10', rest: '90s' },
+      { name: 'Incline Dumbbell Press', setsReps: '3 × 8–12', rest: '90s' },
+      { name: 'Chest-Supported Row', setsReps: '3 × 8–12', rest: '90s' },
+      { name: 'Dumbbell Lateral Raise', setsReps: '3 × 12', rest: '60s' },
+      { name: 'Cable Crunch', setsReps: '3 × 12', rest: '60s' },
+    ],
+  },
+]
+
+const jankaWeeklyRules = [
+  'Schedule the three workouts on non-consecutive days, leaving at least one rest day between sessions.',
+  'Warm up for 5–10 minutes and do a few lighter practice reps before the working sets.',
+  'Choose weights that let you keep controlled form; stop if you feel sharp pain.',
+  'When every set reaches the top of its rep range comfortably, increase the weight a little.',
+]
+
+const jankaTimeline = [
+  { weeks: 'Weeks 1–2', expectation: 'Learn the movements and find comfortable starting weights.' },
+  { weeks: 'Weeks 3–6', expectation: 'Build consistency and gradually add reps or weight while keeping good form.' },
+  { weeks: 'Weeks 7–12', expectation: 'Review strength and recovery, then adjust loads or exercises as needed.' },
+]
+
+const tiborProgressionRules = [
+  { title: 'Heavy (5-rep):', detail: ' add 2.5kg when all sets hit 5 reps with good form; otherwise stay.' },
+  { title: 'Hypertrophy (12-15 rep):', detail: ' increase weight when you hit the top of the rep range on all sets.' },
+  { title: '', detail: 'Focus on controlled tempo: 3 seconds down, 1 second up.' },
+]
+
+const jankaProgressionRules = [
+  { title: 'Start comfortably:', detail: ' pick a load that leaves a couple of controlled reps in reserve.' },
+  { title: 'Progress gradually:', detail: ' once all sets reach the top of the rep range, add a small amount of weight.' },
+  { title: '', detail: 'Keep each rep smooth and stop the set if your form breaks down.' },
+]
+
 const weeklyRules = [
   'Hit 220g protein every single day — even rest day',
   '10,000 steps daily (outside of gym)',
@@ -185,6 +249,11 @@ function WorkoutsPage() {
   const { workouts, routines } = Route.useLoaderData()
   const { member } = Route.useRouteContext()
   const router = useRouter()
+  const isJanka = member.id === 'janka'
+  const trainingPlan = isJanka ? jankaTrainingPlan : tiborTrainingPlan
+  const selectedWeeklyRules = isJanka ? jankaWeeklyRules : weeklyRules
+  const selectedTimeline = isJanka ? jankaTimeline : timeline
+  const selectedProgressionRules = isJanka ? jankaProgressionRules : tiborProgressionRules
 
   const [routineId, setRoutineId] = useState<string>('')
   const [date, setDate] = useState(toDateInputValue(new Date()))
@@ -341,9 +410,11 @@ function WorkoutsPage() {
             <Dumbbell className="w-5 h-5" />
           </span>
           <div>
-            <h2 className="section-title">Custom Training Plan</h2>
+            <h2 className="section-title">{isJanka ? '3-Day Full-Body Plan' : 'Custom Training Plan'}</h2>
             <p className="text-sm text-bone-500">
-              Push/Pull/Legs 6-day rotation — heavy compounds + hypertrophy work
+              {isJanka
+                ? 'Three balanced strength sessions each week, with recovery days between them.'
+                : 'Push/Pull/Legs 6-day rotation — heavy compounds + hypertrophy work'}
             </p>
           </div>
         </div>
@@ -357,7 +428,7 @@ function WorkoutsPage() {
               </p>
             </div>
             <span className="text-[10px] font-bold uppercase tracking-wider text-bone-500">
-              6 training sessions · 1 recovery day
+              {isJanka ? '3 training sessions · rest between days' : '6 training sessions · 1 recovery day'}
             </span>
           </div>
 
@@ -463,24 +534,36 @@ function WorkoutsPage() {
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             <PlanFolder
               title="Plan overview"
-              description="Your current goal and why the push/pull/legs split works"
-              badge="Goal & rationale"
+              description={isJanka
+                ? 'How the three weekly full-body sessions are structured'
+                : 'Your current goal and why the push/pull/legs split works'}
+              badge={isJanka ? '3 days per week' : 'Goal & rationale'}
             >
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="tile">
                   <div className="mb-1.5 flex items-center gap-2">
                     <Target className="h-4 w-4 text-volt-400" />
-                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-bone-500">{member.id === 'tibor' ? 'Current stats' : 'Template stats (Tibor)'}</span>
+                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-bone-500">
+                      {isJanka ? 'Weekly schedule' : member.id === 'tibor' ? 'Current stats' : 'Template stats (Tibor)'}
+                    </span>
                   </div>
-                  <p className="text-sm text-bone-100">99kg | Goal: muscular with visible abs</p>
+                  <p className="text-sm text-bone-100">
+                    {isJanka
+                      ? 'Three full-body sessions each week, ideally with a rest day between them.'
+                      : '99kg | Goal: muscular with visible abs'}
+                  </p>
                 </div>
                 <div className="tile">
                   <div className="mb-1.5 flex items-center gap-2">
                     <TrendingUp className="h-4 w-4 text-volt-400" />
-                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-bone-500">Why PPL?</span>
+                    <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-bone-500">
+                      {isJanka ? 'Why full body?' : 'Why PPL?'}
+                    </span>
                   </div>
                   <p className="text-sm text-bone-100">
-                    Research shows training each muscle 2x per week builds more muscle than a bro split.
+                    {isJanka
+                      ? 'Each session covers lower body, upper-body pushing and pulling, and core, with recovery between days.'
+                      : 'Research shows training each muscle 2x per week builds more muscle than a bro split.'}
                   </p>
                 </div>
               </div>
@@ -492,35 +575,36 @@ function WorkoutsPage() {
               badge="3 rules"
             >
               <ul className="list-disc list-inside space-y-1.5 text-sm text-bone-300">
-                <li>
-                  <span className="font-semibold text-bone-100">Heavy (5-rep):</span> add 2.5kg when all sets hit 5 reps with good form; otherwise stay.
-                </li>
-                <li>
-                  <span className="font-semibold text-bone-100">Hypertrophy (12-15 rep):</span> increase weight when you hit the top of the rep range on all sets.
-                </li>
-                <li>Focus on controlled tempo: 3 seconds down, 1 second up.</li>
+                {selectedProgressionRules.map((rule) => (
+                  <li key={rule.detail}>
+                    {rule.title && <span className="font-semibold text-bone-100">{rule.title}</span>}
+                    {rule.detail}
+                  </li>
+                ))}
               </ul>
             </PlanFolder>
 
             <PlanFolder
               title="Weekly non-negotiables"
               description="Daily habits that support training and recovery"
-              badge={`${weeklyRules.length} targets`}
+              badge={`${selectedWeeklyRules.length} targets`}
             >
               <ul className="list-disc list-inside space-y-1.5 text-sm text-bone-300">
-                {weeklyRules.map((rule) => (
+                {selectedWeeklyRules.map((rule) => (
                   <li key={rule}>{rule}</li>
                 ))}
               </ul>
             </PlanFolder>
 
             <PlanFolder
-              title="Realistic timeline"
-              description="Milestones to expect as the training block progresses"
-              badge="12–20 weeks"
+              title={isJanka ? 'Training roadmap' : 'Realistic timeline'}
+              description={isJanka
+                ? 'A flexible guide to building consistency and strength'
+                : 'Milestones to expect as the training block progresses'}
+              badge={isJanka ? 'First 12 weeks' : '12–20 weeks'}
             >
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {timeline.map((phase) => (
+                {selectedTimeline.map((phase) => (
                   <div key={phase.weeks} className="tile">
                     <p className="text-xs font-bold uppercase tracking-wider text-volt-400">{phase.weeks}</p>
                     <p className="mt-1.5 text-sm text-bone-300">{phase.expectation}</p>
