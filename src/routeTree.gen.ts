@@ -14,6 +14,12 @@ import { Route as RoutinesRouteImport } from './routes/routines'
 import { Route as NutritionRouteImport } from './routes/nutrition'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkoutsOlympicLiftingRouteImport } from './routes/workouts_.olympic-lifting'
+import { Route as PlansMemberRouteImport } from './routes/plans.$member'
+import { Route as PlansMemberIndexRouteImport } from './routes/plans.$member.index'
+import { Route as PlansMemberWorkoutsRouteImport } from './routes/plans.$member.workouts'
+import { Route as PlansMemberRoutinesRouteImport } from './routes/plans.$member.routines'
+import { Route as PlansMemberNutritionRouteImport } from './routes/plans.$member.nutrition'
+import { Route as PlansMemberWorkoutsOlympicLiftingRouteImport } from './routes/plans.$member.workouts_.olympic-lifting'
 
 const WorkoutsRoute = WorkoutsRouteImport.update({
   id: '/workouts',
@@ -40,13 +46,50 @@ const WorkoutsOlympicLiftingRoute = WorkoutsOlympicLiftingRouteImport.update({
   path: '/workouts/olympic-lifting',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlansMemberRoute = PlansMemberRouteImport.update({
+  id: '/plans/$member',
+  path: '/plans/$member',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlansMemberIndexRoute = PlansMemberIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PlansMemberRoute,
+} as any)
+const PlansMemberWorkoutsRoute = PlansMemberWorkoutsRouteImport.update({
+  id: '/workouts',
+  path: '/workouts',
+  getParentRoute: () => PlansMemberRoute,
+} as any)
+const PlansMemberRoutinesRoute = PlansMemberRoutinesRouteImport.update({
+  id: '/routines',
+  path: '/routines',
+  getParentRoute: () => PlansMemberRoute,
+} as any)
+const PlansMemberNutritionRoute = PlansMemberNutritionRouteImport.update({
+  id: '/nutrition',
+  path: '/nutrition',
+  getParentRoute: () => PlansMemberRoute,
+} as any)
+const PlansMemberWorkoutsOlympicLiftingRoute =
+  PlansMemberWorkoutsOlympicLiftingRouteImport.update({
+    id: '/workouts_/olympic-lifting',
+    path: '/workouts/olympic-lifting',
+    getParentRoute: () => PlansMemberRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/nutrition': typeof NutritionRoute
   '/routines': typeof RoutinesRoute
   '/workouts': typeof WorkoutsRoute
+  '/plans/$member': typeof PlansMemberRouteWithChildren
   '/workouts/olympic-lifting': typeof WorkoutsOlympicLiftingRoute
+  '/plans/$member/nutrition': typeof PlansMemberNutritionRoute
+  '/plans/$member/routines': typeof PlansMemberRoutinesRoute
+  '/plans/$member/workouts': typeof PlansMemberWorkoutsRoute
+  '/plans/$member/': typeof PlansMemberIndexRoute
+  '/plans/$member/workouts/olympic-lifting': typeof PlansMemberWorkoutsOlympicLiftingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +97,11 @@ export interface FileRoutesByTo {
   '/routines': typeof RoutinesRoute
   '/workouts': typeof WorkoutsRoute
   '/workouts/olympic-lifting': typeof WorkoutsOlympicLiftingRoute
+  '/plans/$member/nutrition': typeof PlansMemberNutritionRoute
+  '/plans/$member/routines': typeof PlansMemberRoutinesRoute
+  '/plans/$member/workouts': typeof PlansMemberWorkoutsRoute
+  '/plans/$member': typeof PlansMemberIndexRoute
+  '/plans/$member/workouts/olympic-lifting': typeof PlansMemberWorkoutsOlympicLiftingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -61,22 +109,53 @@ export interface FileRoutesById {
   '/nutrition': typeof NutritionRoute
   '/routines': typeof RoutinesRoute
   '/workouts': typeof WorkoutsRoute
+  '/plans/$member': typeof PlansMemberRouteWithChildren
   '/workouts_/olympic-lifting': typeof WorkoutsOlympicLiftingRoute
+  '/plans/$member/nutrition': typeof PlansMemberNutritionRoute
+  '/plans/$member/routines': typeof PlansMemberRoutinesRoute
+  '/plans/$member/workouts': typeof PlansMemberWorkoutsRoute
+  '/plans/$member/': typeof PlansMemberIndexRoute
+  '/plans/$member/workouts_/olympic-lifting': typeof PlansMemberWorkoutsOlympicLiftingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/nutrition' | '/routines' | '/workouts' | '/workouts/olympic-lifting'
+    | '/'
+    | '/nutrition'
+    | '/routines'
+    | '/workouts'
+    | '/plans/$member'
+    | '/workouts/olympic-lifting'
+    | '/plans/$member/nutrition'
+    | '/plans/$member/routines'
+    | '/plans/$member/workouts'
+    | '/plans/$member/'
+    | '/plans/$member/workouts/olympic-lifting'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/nutrition' | '/routines' | '/workouts' | '/workouts/olympic-lifting'
+    | '/'
+    | '/nutrition'
+    | '/routines'
+    | '/workouts'
+    | '/workouts/olympic-lifting'
+    | '/plans/$member/nutrition'
+    | '/plans/$member/routines'
+    | '/plans/$member/workouts'
+    | '/plans/$member'
+    | '/plans/$member/workouts/olympic-lifting'
   id:
     | '__root__'
     | '/'
     | '/nutrition'
     | '/routines'
     | '/workouts'
+    | '/plans/$member'
     | '/workouts_/olympic-lifting'
+    | '/plans/$member/nutrition'
+    | '/plans/$member/routines'
+    | '/plans/$member/workouts'
+    | '/plans/$member/'
+    | '/plans/$member/workouts_/olympic-lifting'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -84,6 +163,7 @@ export interface RootRouteChildren {
   NutritionRoute: typeof NutritionRoute
   RoutinesRoute: typeof RoutinesRoute
   WorkoutsRoute: typeof WorkoutsRoute
+  PlansMemberRoute: typeof PlansMemberRouteWithChildren
   WorkoutsOlympicLiftingRoute: typeof WorkoutsOlympicLiftingRoute
 }
 
@@ -124,14 +204,78 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkoutsOlympicLiftingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/plans/$member': {
+      id: '/plans/$member'
+      path: '/plans/$member'
+      fullPath: '/plans/$member'
+      preLoaderRoute: typeof PlansMemberRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plans/$member/': {
+      id: '/plans/$member/'
+      path: '/'
+      fullPath: '/plans/$member/'
+      preLoaderRoute: typeof PlansMemberIndexRouteImport
+      parentRoute: typeof PlansMemberRoute
+    }
+    '/plans/$member/workouts': {
+      id: '/plans/$member/workouts'
+      path: '/workouts'
+      fullPath: '/plans/$member/workouts'
+      preLoaderRoute: typeof PlansMemberWorkoutsRouteImport
+      parentRoute: typeof PlansMemberRoute
+    }
+    '/plans/$member/routines': {
+      id: '/plans/$member/routines'
+      path: '/routines'
+      fullPath: '/plans/$member/routines'
+      preLoaderRoute: typeof PlansMemberRoutinesRouteImport
+      parentRoute: typeof PlansMemberRoute
+    }
+    '/plans/$member/nutrition': {
+      id: '/plans/$member/nutrition'
+      path: '/nutrition'
+      fullPath: '/plans/$member/nutrition'
+      preLoaderRoute: typeof PlansMemberNutritionRouteImport
+      parentRoute: typeof PlansMemberRoute
+    }
+    '/plans/$member/workouts_/olympic-lifting': {
+      id: '/plans/$member/workouts_/olympic-lifting'
+      path: '/workouts/olympic-lifting'
+      fullPath: '/plans/$member/workouts/olympic-lifting'
+      preLoaderRoute: typeof PlansMemberWorkoutsOlympicLiftingRouteImport
+      parentRoute: typeof PlansMemberRoute
+    }
   }
 }
+
+interface PlansMemberRouteChildren {
+  PlansMemberNutritionRoute: typeof PlansMemberNutritionRoute
+  PlansMemberRoutinesRoute: typeof PlansMemberRoutinesRoute
+  PlansMemberWorkoutsRoute: typeof PlansMemberWorkoutsRoute
+  PlansMemberIndexRoute: typeof PlansMemberIndexRoute
+  PlansMemberWorkoutsOlympicLiftingRoute: typeof PlansMemberWorkoutsOlympicLiftingRoute
+}
+
+const PlansMemberRouteChildren: PlansMemberRouteChildren = {
+  PlansMemberNutritionRoute: PlansMemberNutritionRoute,
+  PlansMemberRoutinesRoute: PlansMemberRoutinesRoute,
+  PlansMemberWorkoutsRoute: PlansMemberWorkoutsRoute,
+  PlansMemberIndexRoute: PlansMemberIndexRoute,
+  PlansMemberWorkoutsOlympicLiftingRoute:
+    PlansMemberWorkoutsOlympicLiftingRoute,
+}
+
+const PlansMemberRouteWithChildren = PlansMemberRoute._addFileChildren(
+  PlansMemberRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   NutritionRoute: NutritionRoute,
   RoutinesRoute: RoutinesRoute,
   WorkoutsRoute: WorkoutsRoute,
+  PlansMemberRoute: PlansMemberRouteWithChildren,
   WorkoutsOlympicLiftingRoute: WorkoutsOlympicLiftingRoute,
 }
 export const routeTree = rootRouteImport

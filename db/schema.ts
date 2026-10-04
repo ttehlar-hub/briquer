@@ -1,13 +1,16 @@
-import { pgTable, serial, text, integer, real, timestamp, pgEnum } from 'drizzle-orm/pg-core'
+import { pgTable, serial, text, integer, real, timestamp, pgEnum, index } from 'drizzle-orm/pg-core'
+import type { MemberId } from '../src/lib/members'
 
 export const workoutStatus = pgEnum('workout_status', ['draft', 'logged'])
 
 export const routines = pgTable('routines', {
   id: serial().primaryKey(),
+  // Legacy entries belong to Tibor; new writes always specify a family member.
+  memberId: text('member_id').$type<MemberId>().notNull().default('tibor'),
   name: text().notNull(),
   notes: text().notNull().default(''),
   createdAt: timestamp('created_at').defaultNow(),
-})
+}, (table) => [index('routines_member_id_idx').on(table.memberId)])
 
 export const routineExercises = pgTable('routine_exercises', {
   id: serial().primaryKey(),
@@ -22,6 +25,8 @@ export const routineExercises = pgTable('routine_exercises', {
 
 export const workouts = pgTable('workouts', {
   id: serial().primaryKey(),
+  // Legacy entries belong to Tibor; new writes always specify a family member.
+  memberId: text('member_id').$type<MemberId>().notNull().default('tibor'),
   routineId: integer('routine_id').references(() => routines.id, {
     onDelete: 'set null',
   }),
@@ -31,7 +36,7 @@ export const workouts = pgTable('workouts', {
   status: workoutStatus().notNull().default('logged'),
   loggedAt: timestamp('logged_at'),
   createdAt: timestamp('created_at').defaultNow(),
-})
+}, (table) => [index('workouts_member_id_idx').on(table.memberId)])
 
 export const workoutExercises = pgTable('workout_exercises', {
   id: serial().primaryKey(),
@@ -47,6 +52,8 @@ export const workoutExercises = pgTable('workout_exercises', {
 
 export const recipes = pgTable('recipes', {
   id: serial().primaryKey(),
+  // Legacy entries belong to Tibor; new writes always specify a family member.
+  memberId: text('member_id').$type<MemberId>().notNull().default('tibor'),
   name: text().notNull(),
   ingredients: text().notNull().default(''),
   instructions: text().notNull().default(''),
@@ -55,4 +62,4 @@ export const recipes = pgTable('recipes', {
   carbs: integer(),
   fats: integer(),
   createdAt: timestamp('created_at').defaultNow(),
-})
+}, (table) => [index('recipes_member_id_idx').on(table.memberId)])

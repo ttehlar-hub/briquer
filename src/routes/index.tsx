@@ -1,79 +1,66 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import { ArrowUpRight, ClipboardList, Dumbbell, UtensilsCrossed } from 'lucide-react'
-import { getWorkouts } from '../server/workouts.functions'
-import { getRoutines } from '../server/routines.functions'
-import { getRecipes } from '../server/recipes.functions'
+import { ArrowRight } from 'lucide-react'
+import { familyMembers } from '../lib/members'
+import { planSections } from '../lib/plan-sections'
 
 export const Route = createFileRoute('/')({
-  loader: async () => {
-    const [workouts, routines, recipes] = await Promise.all([
-      getWorkouts(),
-      getRoutines(),
-      getRecipes(),
-    ])
-    return { workouts, routines, recipes }
-  },
+  head: () => ({ meta: [{ title: 'Choose your plan | GymTibTracker' }] }),
   component: Home,
 })
 
 function Home() {
-  const { workouts, routines, recipes } = Route.useLoaderData()
-
-  const cards = [
-    {
-      to: '/workouts' as const,
-      title: 'Workout Sessions',
-      icon: Dumbbell,
-      count: workouts.length,
-      description: 'Log the sets, reps and weight from every session.',
-    },
-    {
-      to: '/routines' as const,
-      title: 'Routines',
-      icon: ClipboardList,
-      count: routines.length,
-      description: 'Plan reusable exercise routines to follow.',
-    },
-    {
-      to: '/nutrition' as const,
-      title: 'Nutrition Recipes',
-      icon: UtensilsCrossed,
-      count: recipes.length,
-      description: 'Keep the recipes that fuel your training.',
-    },
-  ]
-
   return (
-    <div className="page-shell">
-      <section className="pt-6 sm:pt-14 pb-10">
-        <p className="kicker mb-3">Your training log</p>
-        <h1 className="display-title text-4xl sm:text-6xl">
-          Welcome back to<br className="hidden sm:block" /> your gym log
+    <div className="welcome-shell">
+      <section className="welcome-intro" aria-labelledby="welcome-title">
+        <p className="welcome-kicker">A little progress, every day</p>
+        <h1 id="welcome-title" className="welcome-title">
+          Stronger,<br />
+          <span className="text-[#52725b]">together.</span>
         </h1>
-        <p className="mt-4 max-w-xl text-bone-300">
-          Everything about your training — sessions, routines and nutrition — in one place.
+        <p className="welcome-description">
+          Your workouts, your routines, your nutrition.<br className="hidden sm:block" />
+          One space. A plan for each of you.
         </p>
+
+        <div className="profile-chooser">
+          <h2 className="text-sm font-semibold text-[#34483b]">Who’s training today?</h2>
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            {familyMembers.map((member) => (
+              <Link
+                key={member.id}
+                to="/plans/$member"
+                params={{ member: member.id }}
+                className="profile-card group"
+                aria-label={`Open ${member.name}’s plan`}
+              >
+                <span className={`member-avatar member-avatar-${member.tone}`} aria-hidden="true">
+                  {member.initial}
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-lg font-semibold leading-tight">{member.name}</span>
+                  <span className="mt-1 block text-xs text-[#6a796a]">My plan</span>
+                </span>
+                <ArrowRight className="ml-auto h-4 w-4 shrink-0 text-[#667c66] transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </Link>
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-[#73806e]">Your own plan. Your own progress.</p>
+        </div>
       </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {cards.map((card) => (
-          <Link
-            key={card.to}
-            to={card.to}
-            className="panel group p-6 transition duration-200 hover:border-volt-400/40 hover:-translate-y-1"
-          >
-            <div className="flex items-start justify-between">
-              <span className="bg-volt-400/10 border border-volt-400/30 text-volt-400 p-3 rounded-xl">
-                <card.icon className="w-6 h-6" />
-              </span>
-              <ArrowUpRight className="w-5 h-5 text-bone-700 transition group-hover:text-volt-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+      <section className="essentials-strip" aria-label="Three essentials in every plan">
+        {planSections.map((section) => (
+          <div key={section.title} className="flex items-start gap-3 sm:gap-4">
+            <span className="essential-icon" aria-hidden="true">
+              <section.icon className="h-5 w-5" strokeWidth={1.7} />
+            </span>
+            <div>
+              <h2 className="text-sm sm:text-base font-semibold">{section.title}</h2>
+              <p className="mt-1 hidden sm:block text-sm text-[#6b796a]">{section.description}</p>
             </div>
-            <p className="display-title text-4xl mt-5 text-volt-400">{card.count}</p>
-            <h2 className="section-title mt-1.5">{card.title}</h2>
-            <p className="text-sm text-bone-500 mt-1.5">{card.description}</p>
-          </Link>
+          </div>
         ))}
-      </div>
+      </section>
     </div>
   )
 }

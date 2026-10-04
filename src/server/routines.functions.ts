@@ -1,8 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
-import { eq } from 'drizzle-orm'
+import { and, eq, inArray } from 'drizzle-orm'
 import { z } from 'zod'
 import { db } from '../../db/index.js'
 import { routines, routineExercises } from '../../db/schema.js'
+import { memberInputSchema } from './member-input'
 
 const ExerciseInput = z.object({
   name: z.string().min(1),
@@ -10,22 +11,31 @@ const ExerciseInput = z.object({
   reps: z.number().int().min(1),
 })
 
-export const getRoutines = createServerFn().handler(async () => {
-  const allRoutines = await db.select().from(routines).orderBy(routines.id)
-  const allExercises = await db
-    .select()
-    .from(routineExercises)
-    .orderBy(routineExercises.position)
+export const getRoutines = createServerFn()
+  .inputValidator(memberInputSchema)
+  .handler(async ({ data }) => {
+    const allRoutines = await db
+      .select()
+      .from(routines)
+      .where(eq(routines.memberId, data.memberId))
+      .orderBy(routines.id)
+    const allExercises = allRoutines.length > 0
+      ? await db
+          .select()
+          .from(routineExercises)
+          .where(inArray(routineExercises.routineId, allRoutines.map((routine) => routine.id)))
+          .orderBy(routineExercises.position)
+      : []
 
-  return allRoutines.map((routine) => ({
-    ...routine,
-    exercises: allExercises.filter((e) => e.routineId === routine.id),
-  }))
-})
+    return allRoutines.map((routine) => ({
+      ...routine,
+      exercises: allExercises.filter((exercise) => exercise.routineId === routine.id),
+    }))
+  })
 
 export const createRoutine = createServerFn({ method: 'POST' })
   .inputValidator(
-    z.object({
+    memberInputSchema.extend({
       name: z.string().min(1),
       notes: z.string().default(''),
       exercises: z.array(ExerciseInput).default([]),
@@ -34,7 +44,7 @@ export const createRoutine = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     const [routine] = await db
       .insert(routines)
-      .values({ name: data.name, notes: data.notes })
+      .values({ memberId: data.memberId, name: data.name, notes: data.notes })
       .returning()
 
     if (data.exercises.length > 0) {
@@ -53,8 +63,12 @@ export const createRoutine = createServerFn({ method: 'POST' })
   })
 
 export const deleteRoutine = createServerFn({ method: 'POST' })
-  .inputValidator(z.object({ id: z.number() }))
+  .inputValidator(memberInputSchema.extend({ id: z.number().int().positive() }))
   .handler(async ({ data }) => {
-    await db.delete(routines).where(eq(routines.id, data.id))
+    const deleted = await db
+      .delete(routines)
+      .where(and(eq(routines.id, data.id), eq(routines.memberId, data.memberId)))
+      .returning({ id: routines.id })
+    if (deleted.length === 0) throw new Error('Routine not found for this profile.')
     return { success: true }
   })
