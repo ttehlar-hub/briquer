@@ -170,6 +170,16 @@ body.light-surface::after {
     linear-gradient(0deg, #f6f7f0 0%, rgba(246, 247, 240, 0.9) 9%, rgba(246, 247, 240, 0.15) 44%, transparent 65%);
 }
 
+/* Keep the landing page distinct: an empty gym, with room for its welcome copy. */
+body.home-surface::before {
+  background-image: url("/gym-bg-empty.jpg");
+}
+
+/* Janka gets her own training backdrop; Tibor keeps the shared default image. */
+body.janka-surface::before {
+  background-image: url("/janka-training-bg.jpg");
+}
+
 .site-header {
   position: sticky;
   top: 0;
@@ -477,6 +487,10 @@ button:focus-visible {
 @media (max-width: 767px) {
   body.light-surface::before {
     background-position: 68% top;
+  }
+
+  body.janka-surface::before {
+    background-position: 72% center;
   }
 
   body.light-surface::after {
