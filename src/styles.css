@@ -170,9 +170,11 @@ body.light-surface::after {
     linear-gradient(0deg, #f6f7f0 0%, rgba(246, 247, 240, 0.9) 9%, rgba(246, 247, 240, 0.15) 44%, transparent 65%);
 }
 
-/* Keep the landing page distinct: an empty gym, with room for its welcome copy. */
+/* Keep the landing page distinct: a heavy strength gym (loaded barbell and dumbbell rack),
+   framed so the weights sit on the right and the welcome copy keeps a clean left column. */
 body.home-surface::before {
   background-image: url("/gym-bg-empty.jpg");
+  background-position: center;
 }
 
 /* Janka gets her own training backdrop; Tibor keeps the shared default image. */
@@ -487,6 +489,12 @@ button:focus-visible {
 @media (max-width: 767px) {
   body.light-surface::before {
     background-position: 68% top;
+  }
+
+  /* On narrow screens the copy stacks over the whole width, so keep the barbell and
+     dumbbell rack in view instead of the empty wall on the left. */
+  body.home-surface::before {
+    background-position: 88% center;
   }
 
   body.janka-surface::before {

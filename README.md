@@ -6,7 +6,7 @@ A family space for workout sessions, reusable routines, and nutrition recipes. C
 
 - **Family plans** — choose Tibor or Janka at `/`. Each has their own overview at `/plans/tibor` or `/plans/janka`, with Workouts, Routines and Nutrition. The header profile button returns to the chooser.
 - **Separate logs** — saved sessions, routines and recipes are scoped to a family member. Existing entries remain Tibor’s. Janka has her own three-day full-body plan; nutrition still uses Tibor’s starter template for now.
-- **Member-specific backgrounds** — the chooser reuses the uploaded gym photo with people removed, Janka’s plan uses a separate woman-training background, and Tibor keeps the existing outdoor-training image.
+- **Member-specific backgrounds** — the chooser uses a heavy strength-gym backdrop (loaded barbell and dumbbell rack, framed to the right of the welcome copy), Janka’s plan uses a separate woman-training background, and Tibor keeps the existing outdoor-training image.
 - **Minimal overview** — three simple section cards with no count-heavy dashboard.
 - **Workout sessions** — log a session's date, optional routine, and the exercises actually performed (sets, reps, weight). After every workout you choose to **save it as a draft** or **confirm it** ("I did this training") so it gets logged; drafts can be confirmed later from the session list.
 - **Routines** — define reusable exercise plans that can be applied to a new session with one click.
